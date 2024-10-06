@@ -1,94 +1,94 @@
-import React, { useState } from "react";
-import M from "materialize-css"; // Import Materialize for initialization
+import { toast } from "react-toastify";
+import { useCart } from "../utils/CartContext";
 
-const CheckoutPage: React.FC = () => {
-  // Local state for form fields
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("creditCard");
-  const [items, setItems] = useState("");
+const Checkout = () => {
+  const { cart, clearCart } = useCart();
 
-  // Handle form submission
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // In a real app, you'd handle form submission here (e.g., send data to an API)
-    console.log("Order Submitted", { name, address, paymentMethod, items });
+  const totalPrice = cart.reduce(
+    (total, product) => total + product.price * product.quantity,
+    0
+  );
+
+  const handleOrder = () => {
+    clearCart();
+    toast.success(`Order submitted successfully!`, {
+      position: "top-center",
+      autoClose: 3000,
+    });
   };
 
-  // Initialize Materialize CSS components
-  React.useEffect(() => {
-    M.AutoInit(); // Initialize all Materialize CSS components
-  }, []);
-
   return (
-    <div className="container">
-      <h1 className="center-align">Checkout</h1>
-      <div className="card">
-        <div className="card-content">
-          <form onSubmit={handleSubmit}>
+    <div style={{ margin: "3.6rem 10% 9.6rem" }}>
+      <h4
+        style={{
+          textAlign: "left",
+          margin: "0 0 3.6rem",
+          fontWeight: "bold",
+        }}
+      >
+        Checkout
+      </h4>
+      <div className="row">
+        <div className="col s7">
+          <h5>Customer Information</h5>
+          <form>
             <div className="input-field">
               <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
+                type="email"
+                id="email"
+                disabled
+                value="user@example.com"
               />
-              <label htmlFor="name">Name</label>
+              <label htmlFor="email">Email</label>
             </div>
-
             <div className="input-field">
-              <input
-                id="address"
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-              />
+              <input type="text" id="address" required />
               <label htmlFor="address">Address</label>
             </div>
-
             <div className="input-field">
-              <select
-                id="payment-method"
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-                required
-              >
-                <option value="" disabled>
-                  Choose your payment method
-                </option>
-                <option value="creditCard">Credit Card</option>
-                <option value="paypal">PayPal</option>
-                <option value="bankTransfer">Bank Transfer</option>
-              </select>
-              <label htmlFor="payment-method">Payment Method</label>
+              <input type="tel" id="phone" required />
+              <label htmlFor="phone">Phone Number</label>
             </div>
-
-            <div className="input-field">
-              <textarea
-                id="items"
-                className="materialize-textarea"
-                value={items}
-                onChange={(e) => setItems(e.target.value)}
-                required
-              />
-              <label htmlFor="items">
-                Items (e.g., List of items or description)
-              </label>
-            </div>
-
-            <div className="center-align">
-              <button type="submit" className="btn waves-effect waves-light">
-                Submit Order
-                <i className="material-icons right">send</i>
-              </button>
-            </div>
+            <button type="submit" className="btn green" onClick={handleOrder}>
+              Proceed to Payment
+            </button>
           </form>
         </div>
+
+        <aside
+          className="col s4 right"
+          style={{
+            backgroundColor: "#f1f1f1",
+            borderRadius: "4px",
+            padding: "2rem",
+          }}
+        >
+          <p style={{ margin: "0 0 1.2rem", fontSize: "1.4rem" }}>
+            Order Summary
+          </p>
+          <div>
+            {cart.map((product) => (
+              <div
+                className="row"
+                style={{ margin: "0.5rem 0" }}
+                key={product.id}
+              >
+                <span className="left">{product.name}</span>
+                <span className="left">&nbsp;&nbsp;×{product.quantity}</span>
+                <span className="right">
+                  ${(product.price * product.quantity).toFixed(2)}
+                </span>
+              </div>
+            ))}
+            <hr style={{ margin: "1rem 0" }} />
+            <div className="total">
+              <strong>Total: ${totalPrice.toFixed(2)}</strong>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );
 };
 
-export default CheckoutPage;
+export default Checkout;

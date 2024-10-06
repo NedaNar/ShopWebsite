@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { ProductType } from "../utils/ProductType";
+import { ProductCategory } from "../utils/ProductCategory";
 import { useNavigate } from "react-router";
 import useFetch from "../api/useDataFetching";
 import { Item } from "../api/apiModel";
-import { Endpoint } from "../api/endpoints";
+import { useCart } from "../utils/CartContext";
 
 export default function ProductsLayout() {
-  const [selectedType, setSelectedType] = useState<ProductType | null>(null);
+  const [selectedCategory, setselectedCategory] =
+    useState<ProductCategory | null>(null);
   const [filteredItems, setFilteredItems] = useState<Item[] | null>([]);
   const navigate = useNavigate();
 
-  const items = useFetch<Item[]>(Endpoint.ITEMS);
+  const { addToCart } = useCart();
+  const items = useFetch<Item[]>("Item");
 
   useEffect(() => {
     if (!items) {
@@ -19,11 +21,13 @@ export default function ProductsLayout() {
     }
 
     setFilteredItems(
-      selectedType
-        ? items.filter((product) => product.type === selectedType)
+      selectedCategory
+        ? items.filter(
+            (product) => product.category.trim() === selectedCategory
+          )
         : items
     );
-  }, [items]);
+  }, [items, selectedCategory]);
 
   return (
     <div>
@@ -32,18 +36,18 @@ export default function ProductsLayout() {
           <button
             className="btn-large"
             style={{ margin: "0 0.4rem" }}
-            onClick={() => setSelectedType(null)}
+            onClick={() => setselectedCategory(null)}
           >
             All
           </button>
-          {Object.values(ProductType).map((type) => (
+          {Object.values(ProductCategory).map((category) => (
             <button
-              key={type}
+              key={category}
               className="btn-large"
               style={{ margin: "0 0.4rem" }}
-              onClick={() => setSelectedType(type)}
+              onClick={() => setselectedCategory(category)}
             >
-              {type}
+              {category}
             </button>
           ))}
         </div>
@@ -75,7 +79,11 @@ export default function ProductsLayout() {
                     >
                       View more
                     </button>
-                    <button className="btn-small  teal lighten-2">
+                    <button
+                      className="btn-small  teal lighten-2"
+                      disabled={product.itemCount <= 0}
+                      onClick={() => addToCart(product)}
+                    >
                       <i className="material-icons right">shopping_cart</i>Add
                       to cart
                     </button>
@@ -91,7 +99,7 @@ export default function ProductsLayout() {
                 </h5>
                 <button
                   className="btn-flat"
-                  onClick={() => setSelectedType(null)}
+                  onClick={() => setselectedCategory(null)}
                 >
                   View All
                 </button>

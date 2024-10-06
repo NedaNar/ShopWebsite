@@ -12,24 +12,30 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import OrderDetails from "./pages/OrderDetails";
 import CheckoutPage from "./pages/Checkout";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { CartProvider } from "./utils/CartContext";
 
 function App() {
   return (
     <>
+      <ToastContainer />
       <Header />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/cart" element={<ShoppingCart />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/orders/:id" element={<OrderDetails />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
+        <CartProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<ShoppingCart />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/orders/:id" element={<OrderDetails />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </CartProvider>
       </BrowserRouter>
       <Footer />
     </>

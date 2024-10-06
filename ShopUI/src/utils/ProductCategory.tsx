@@ -1,6 +1,6 @@
-export enum ProductType {
+export enum ProductCategory {
   Sticker = "Sticker",
-  Shirt = "Shirt",
+  Tshirt = "Tshirt",
   Jumper = "Jumper",
   Print = "Print",
 }

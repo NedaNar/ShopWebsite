@@ -1,22 +1,20 @@
 import { useLocation } from "react-router-dom";
-import { Review } from "../utils/Types";
+import useFetch from "../api/useDataFetching";
+import { Item, Rating } from "../api/apiModel";
+import StarRating from "../components/StarRating";
+import { useCart } from "../utils/CartContext";
 
 const ProductDetail = () => {
   const location = useLocation();
-  const product = location.state?.product;
+  const product: Item = location.state?.product;
 
-  const reviews: Review[] = [
-    {
-      id: 1,
-      comment: "very nice",
-      rating: 5,
-    },
-    {
-      id: 1,
-      comment: "very nice",
-      rating: 5,
-    },
-  ];
+  const { addToCart } = useCart();
+  const ratings = useFetch<Rating[]>(`Rating/user/${product.id}`);
+
+  const getAverageRating = (reviews: Rating[]) => {
+    const total = reviews.reduce((sum, review) => sum + review.itemRating, 0);
+    return Math.round(total / reviews.length);
+  };
 
   if (!product) {
     return <div>Product not found</div>;
@@ -39,16 +37,19 @@ const ProductDetail = () => {
             className="row"
             style={{ color: "#ffab00", margin: "0 0 2.4rem" }}
           >
-            <div className="valign-wrapper">
-              <i className="material-icons">star</i>
-              <i className="material-icons">star</i>
-              <i className="material-icons">star</i>
-              <i className="material-icons">star</i>
-              <i className="material-icons">star_border</i>
+            {ratings && ratings.length > 0 && (
+              <div className="valign-wrapper">
+                <StarRating rating={getAverageRating(ratings)} />
+                <span style={{ marginLeft: "0.5rem", color: "black" }}>
+                  <i>{ratings.length} ratings</i>
+                </span>
+              </div>
+            )}
+            {(!ratings || ratings.length === 0) && (
               <span style={{ marginLeft: "0.5rem", color: "black" }}>
-                <i>5 ratings</i>
+                <i>No ratings yet</i>
               </span>
-            </div>
+            )}
           </div>
 
           <p style={{ marginBottom: "6.4rem", fontSize: "1.2rem" }}>
@@ -57,16 +58,20 @@ const ProductDetail = () => {
           <h4 style={{ marginBottom: "2.4rem" }}>
             <strong>${product.price.toFixed(2)}</strong>
           </h4>
-          <button className="btn-large teal lighten-2">
+          <button
+            className="btn-large teal lighten-2"
+            disabled={product.itemCount <= 0}
+            onClick={() => addToCart(product)}
+          >
             <i className="material-icons right">shopping_cart</i>Add to cart
           </button>
         </div>
       </div>
-      {reviews.length > 0 && (
+      {ratings && ratings.length > 0 && (
         <div style={{ margin: "2.4rem 0.8rem" }}>
           <hr />
           <h5 style={{ margin: "2.4rem 0" }}>Reviews</h5>
-          {reviews.map((item) => (
+          {ratings.map((rating) => (
             <li
               className="collection-item teal lighten-5"
               style={{
@@ -76,14 +81,8 @@ const ProductDetail = () => {
                 borderRadius: "1.2rem",
               }}
             >
-              <div className="row" style={{ color: "#ffab00", margin: "0" }}>
-                <i className="material-icons">star</i>
-                <i className="material-icons">star</i>
-                <i className="material-icons">star</i>
-                <i className="material-icons">star</i>
-                <i className="material-icons">star_border</i>
-              </div>
-              <p style={{ margin: "0.4rem 0 0" }}>{item.comment}</p>
+              <StarRating rating={rating.itemRating} />
+              <p style={{ margin: "0.4rem 0 0" }}>{rating.comment}</p>
             </li>
           ))}
         </div>

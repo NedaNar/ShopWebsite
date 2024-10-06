@@ -1,11 +1,21 @@
-import { ProductType } from "../utils/ProductType";
+import { ProductCategory } from "../utils/ProductCategory";
 
 export interface Item {
   id: number;
   name: string;
-  type: ProductType;
+  category: ProductCategory;
   img: string;
   descr: string;
   price: number;
-  itemCpunt: number;
+  itemCount: number;
+}
+
+export interface Rating {
+  id: number;
+  comment: string;
+  itemRating: number;
+}
+
+export interface CartItem extends Item {
+  quantity: number;
 }

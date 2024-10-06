@@ -1,47 +1,31 @@
-import { Product } from "../utils/Types";
-import { ProductType } from "../utils/ProductType";
+import { useCart } from "../utils/CartContext";
 import { useNavigate } from "react-router-dom";
-
-const shopping_cart: Product[] = [
-  {
-    id: 1,
-    name: "Porto & Sicily Stickers",
-    type: ProductType.Sticker,
-    image: "http://localhost:5173/src/assets/images/products/houses.png",
-    description:
-      "Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-    price: 2.99,
-    amount: 21,
-  },
-  {
-    id: 2,
-    name: '"Perfect Enough" t-shirt',
-    type: ProductType.Shirt,
-    image: "http://localhost:5173/src/assets/images/products/tshirt.png",
-    description:
-      "Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-    price: 2.99,
-    amount: 21,
-  },
-];
 
 const ShoppingCart = () => {
   const navigate = useNavigate();
 
+  const { cart, removeFromCart, addToCart, updateItemQuantity } = useCart();
+
   const getTotalPrice = () => {
-    return shopping_cart
-      .reduce((total, item) => total + item.price, 0)
+    return cart
+      .reduce((total, item) => total + item.price * item.quantity, 0)
       .toFixed(2);
   };
 
   return (
     <>
-      {shopping_cart.length != 0 && (
+      {cart.length != 0 && (
         <div style={{ margin: "3.6rem 10% 9.6rem" }}>
-          <h4 style={{ textAlign: "left", margin: "0 0 3.6rem" }}>
+          <h4
+            style={{
+              textAlign: "left",
+              margin: "0 0 3.6rem",
+              fontWeight: "bold",
+            }}
+          >
             Shopping Cart
           </h4>
-          {shopping_cart.map((item) => (
+          {cart.map((item) => (
             <li
               className="collection-item teal lighten-5"
               style={{
@@ -51,42 +35,83 @@ const ShoppingCart = () => {
                 borderRadius: "1.2rem",
               }}
             >
-              <div className="row" style={{ margin: "0" }}>
+              <div
+                className="row valign-wrapper"
+                style={{ margin: "0", width: "100%" }}
+              >
                 <div className="left">
-                  <div className="left">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{ width: "9.6rem" }}
-                    />
-                  </div>
-                  <div
-                    className="left"
-                    style={{ textAlign: "left", margin: "0 2.4rem" }}
-                  >
-                    <h5>{item.name}</h5>
-                    <p
-                      className="title"
-                      style={{
-                        fontSize: "1.6rem",
-                        fontWeight: "Bold",
-                        margin: "1.2rem 0 0",
-                      }}
-                    >
-                      ${item.price}
-                    </p>
-                  </div>
+                  <img
+                    src={`${window.location.origin}/src/assets/images/items/${item.img}`}
+                    alt={item.name}
+                    style={{ width: "9.6rem" }}
+                  />
                 </div>
-                <div className="right">
-                  <div className="row">
-                    <button
-                      className="btn teal lighten-2"
-                      style={{ margin: "3.6rem 0 0" }}
-                    >
-                      <i className="material-icons right">delete_forever</i>
-                      Remove
-                    </button>
-                  </div>
+                <div
+                  className="left"
+                  style={{ textAlign: "left", margin: "0 2.4rem" }}
+                >
+                  <h5 style={{ margin: "0" }}>{item.name}</h5>
+                  <p
+                    style={{
+                      fontSize: "1.6rem",
+                      fontWeight: "Bold",
+                      margin: "0.4rem 0 0",
+                    }}
+                  >
+                    ${item.price}
+                  </p>
+                </div>
+
+                <div
+                  style={{
+                    marginLeft: "auto",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <button
+                    className="btn-small teal lighten-2"
+                    onClick={() => addToCart(item)}
+                  >
+                    <i className="material-icons">add</i>
+                  </button>
+                  <p
+                    style={{
+                      width: "4rem",
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      background: "#f5f5f5",
+                      borderRadius: "4px",
+                      margin: "0 0.5rem",
+                      padding: "0.4rem",
+                    }}
+                  >
+                    {item.quantity || 0}
+                  </p>
+                  <button
+                    className="btn-small teal lighten-2"
+                    style={{ margin: "0 2rem 0 0" }}
+                    onClick={() => {
+                      if (item.quantity > 1) {
+                        updateItemQuantity(item.id, item.quantity - 1);
+                      } else {
+                        removeFromCart(item.id);
+                      }
+                    }}
+                  >
+                    <i className="material-icons">remove</i>
+                  </button>
+
+                  <p
+                    style={{
+                      width: "5rem",
+                      fontSize: "1.2rem",
+                      textAlign: "right",
+                      color: "#250000",
+                    }}
+                  >
+                    ${(item.quantity * item.price).toFixed(2)}
+                  </p>
                 </div>
               </div>
             </li>
@@ -114,7 +139,7 @@ const ShoppingCart = () => {
           </h5>
         </div>
       )}
-      {shopping_cart.length == 0 && (
+      {(!cart || cart.length == 0) && (
         <div>
           <h5 style={{ margin: "6.4rem 0 1.6rem" }}>Shopping cart is empty</h5>
           <a className="btn-flat" href="/">

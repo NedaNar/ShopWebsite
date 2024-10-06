@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Endpoint } from "./endpoints";
 
-function useFetch<T>(endpoint: Endpoint): T | null {
+function useFetch<T>(endpoint: string): T | null {
   const [data, setData] = useState<T | null>(null);
 
   useEffect(() => {
@@ -14,7 +13,6 @@ function useFetch<T>(endpoint: Endpoint): T | null {
       } catch (error) {
         console.log(error);
       } finally {
-        console.log("fetch completed");
       }
     };
 
