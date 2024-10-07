@@ -53,7 +53,7 @@ CREATE TABLE rating
 	FOREIGN KEY(fk_itemid) REFERENCES item (id)
 );
 
-CREATE TABLE order_item
+CREATE TABLE order_item 
 (
 	quantity int,
 	price double precision,

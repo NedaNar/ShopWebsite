@@ -1,20 +1,57 @@
 import { toast } from "react-toastify";
 import { useCart } from "../utils/CartContext";
+import { useEffect, useState } from "react";
+import usePost from "../api/useDataPosting";
+import { Order } from "../api/apiModel";
+import { OrderStatus } from "../utils/OrderStatus";
+import { useNavigate } from "react-router";
+import { toastError, toastSuccess } from "../utils/toastUtils";
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const { cart, clearCart } = useCart();
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const { responseData, error, postData } = usePost<Order>("Order");
 
   const totalPrice = cart.reduce(
     (total, product) => total + product.price * product.quantity,
     0
   );
 
-  const handleOrder = () => {
-    clearCart();
-    toast.success(`Order submitted successfully!`, {
-      position: "top-center",
-      autoClose: 3000,
-    });
+  useEffect(() => {
+    if (responseData) {
+      clearCart();
+      toastSuccess(`Order submitted successfully!`);
+      navigate("/profile");
+    }
+  }, [responseData]);
+
+  useEffect(() => {
+    if (error) {
+      toastError(`Error submitting the order. Please try again later.`);
+    }
+  }, [error]);
+
+  const handleOrder = (e: any) => {
+    e.preventDefault();
+
+    const orderData = {
+      totalPrice: totalPrice,
+      address: address,
+      phoneNumber: phone,
+      orderDate: new Date().toISOString(),
+      status: OrderStatus.Received,
+      userId: 1,
+      orderItems: cart.map((product) => ({
+        quantity: product.quantity,
+        itemId: product.id,
+      })),
+    };
+    console.log(orderData);
+
+    postData(orderData);
   };
 
   return (
@@ -30,26 +67,50 @@ const Checkout = () => {
       </h4>
       <div className="row">
         <div className="col s7">
-          <h5>Customer Information</h5>
+          <h5 style={{ margin: "0 0 2.4rem" }}>Customer Information</h5>
           <form>
+            <p
+              style={{
+                margin: "0 0 0.2rem",
+                fontSize: "1.2rem",
+                textAlign: "left",
+              }}
+            >
+              {"Name Surname"}
+            </p>
+            <p
+              style={{
+                margin: "0 0 2rem",
+                fontSize: "1.2rem",
+                textAlign: "left",
+                color: "#3A5C74",
+              }}
+            >
+              {"example@email.com"}
+            </p>
             <div className="input-field">
               <input
-                type="email"
-                id="email"
-                disabled
-                value="user@example.com"
+                type="text"
+                id="address"
+                required
+                onChange={(e) => setAddress(e.target.value)}
               />
-              <label htmlFor="email">Email</label>
-            </div>
-            <div className="input-field">
-              <input type="text" id="address" required />
               <label htmlFor="address">Address</label>
             </div>
             <div className="input-field">
-              <input type="tel" id="phone" required />
+              <input
+                type="tel"
+                id="phone"
+                required
+                onChange={(e) => setPhone(e.target.value)}
+              />
               <label htmlFor="phone">Phone Number</label>
             </div>
-            <button type="submit" className="btn green" onClick={handleOrder}>
+            <button
+              className="btn-large"
+              onClick={handleOrder}
+              disabled={!phone || !address}
+            >
               Proceed to Payment
             </button>
           </form>

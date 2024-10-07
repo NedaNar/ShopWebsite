@@ -42,6 +42,14 @@ public class RatingController : ControllerBase
         return Ok(ratings);
     }
 
+    [HttpGet("item/{itemId}/user/{userId}")]
+    public Rating? GetRatingByUserAndItem(int userId, int itemId)
+    {
+        return _context.Ratings
+            .Where(r => r.UserId == userId && r.ItemId == itemId)
+            .FirstOrDefault();
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAllRatings()
     {

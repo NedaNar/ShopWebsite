@@ -82,7 +82,7 @@ export default function ProductsLayout() {
                     <button
                       className="btn-small  teal lighten-2"
                       disabled={product.itemCount <= 0}
-                      onClick={() => addToCart(product)}
+                      onClick={() => addToCart(product, true)}
                     >
                       <i className="material-icons right">shopping_cart</i>Add
                       to cart

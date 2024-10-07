@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ShopAPI.Models
 {
@@ -14,22 +15,24 @@ namespace ShopAPI.Models
         public string Comment { get; set; }
 
         [Required]
-        [Column("rating")]  // Maps to "rating" column in the database
-        public int ItemRating { get; set; }  // Property should match the SQL column name
+        [Column("rating")]
+        public int ItemRating { get; set; }
 
         [Required]
-        [Column("fk_userid")]  // Explicitly map this to the correct column
+        [Column("fk_userid")]
         public int UserId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey("UserId")]
-        public User User { get; set; }  // Navigation property for the related User
+        public User? User { get; set; }
 
         [Required]
-        [Column("fk_itemid")]  // Explicitly map this to the correct column
+        [Column("fk_itemid")]
         public int ItemId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey("ItemId")]
-        public Item Item { get; set; }  // Navigation property for the related Item
+        public Item? Item { get; set; }
     }
 
 }

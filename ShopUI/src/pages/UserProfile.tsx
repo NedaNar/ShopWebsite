@@ -1,112 +1,101 @@
 import React from "react";
-import { useTable, Column, Row } from "react-table";
-import { Link, useNavigate } from "react-router-dom";
-import { Order, mockOrders } from "./Orders"; // Import Order type and mockOrders for demo
+import { useNavigate } from "react-router-dom";
+import useFetch from "../api/useDataFetching";
+import { Order } from "../api/apiModel";
 
 const UserProfile: React.FC = () => {
   const navigate = useNavigate();
-  // Sample user data
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    address: "1234 Elm St, Springfield, USA",
-  };
-
-  // Filter orders for the sample user
-  const userOrders = mockOrders.filter(
-    (order) => order.customerName === "John"
-  );
-
-  // Define columns for react-table
-  const columns: Column<Order>[] = React.useMemo(
-    () => [
-      { Header: "Order ID", accessor: "id" },
-      { Header: "Order Date", accessor: "orderDate" },
-      { Header: "Total Amount", accessor: "totalAmount" },
-      { Header: "Status", accessor: "status" },
-      {
-        id: "actions",
-        Cell: ({ row }: { row: Row<Order> }) => (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/orders/${row.original.id}`);
-            }}
-            className="btn-small waves-effect waves-light"
-          >
-            View Details
-          </button>
-        ),
-      },
-    ],
-    []
-  );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data: userOrders,
-    });
+  const orders = useFetch<Order[]>(`Order/user/1`);
 
   return (
-    <div className="container">
-      <h1 className="center-align">User Profile</h1>
+    <div style={{ margin: "3.6rem 10% 9.6rem" }}>
+      <h4
+        style={{
+          textAlign: "left",
+          margin: "0 0 3.6rem",
+          fontWeight: "bold",
+        }}
+      >
+        My Profile
+      </h4>
 
-      <div className="card">
-        <div className="card-content">
-          <h2>Personal Information</h2>
-          <p>
-            <strong>Name:</strong> {user.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
-          <p>
-            <strong>Address:</strong> {user.address}
-          </p>
+      <div
+        style={{
+          backgroundColor: "#f1f1f1",
+          borderRadius: "12px",
+          padding: "2rem",
+          textAlign: "left",
+          fontSize: "1.2rem",
+        }}
+      >
+        <p style={{ margin: "0 0 1.2rem", fontSize: "1.8rem" }}>
+          Personal information
+        </p>
+        <p>Name Surname</p>
+        <p>example@gmail.com</p>
+        <div className="row">
+          <button className="btn-small">Edit</button>{" "}
+          <button className="btn-small">Save</button>
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-content">
-          <h2>My Orders</h2>
-          {userOrders.length > 0 ? (
-            <table {...getTableProps()} className="highlight">
-              <thead>
-                {headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => (
-                      <th {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getTableBodyProps()}>
-                {rows.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr
-                      {...row.getRowProps()}
-                      onClick={() => navigate(`/orders/${row.original.id}`)}
-                      style={{
-                        cursor: "pointer",
+      {orders && orders.length > 0 && (
+        <div>
+          <p
+            style={{
+              margin: "3rem 0 1rem",
+              fontSize: "1.8rem",
+              textAlign: "left",
+            }}
+          >
+            My orders
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr
+                  key={order.id}
+                  onClick={() =>
+                    navigate(`/orders/${order.id}`, {
+                      state: { order },
+                    })
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  <td>{order.id}</td>
+                  <td>
+                    {new Date(order.orderDate).toLocaleDateString("lt-LT")}
+                  </td>
+                  <td>{order.totalPrice}</td>
+                  <td>{order.status}</td>
+                  <td>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/orders/${order.id}`, {
+                          state: { order },
+                        });
                       }}
+                      className="btn-small waves-effect waves-light"
                     >
-                      {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          ) : (
-            <p>No orders found</p>
-          )}
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
+      )}
     </div>
   );
 };

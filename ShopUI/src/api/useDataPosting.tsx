@@ -1,27 +1,33 @@
 import { useState } from "react";
 import axios from "axios";
-import { Endpoint } from "./endpoints";
 
 interface PostResult<T> {
   responseData: T | null;
+  error: boolean;
   postData: (data: T) => void;
 }
 
-function usePost<T>(endpoint: Endpoint): PostResult<T> {
+function usePost<T>(endpoint: string): PostResult<T> {
   const [responseData, setResponseData] = useState<T | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   const postData = async (data: T) => {
     try {
       const url = `https://localhost:7265/api/${endpoint}`;
       const response = await axios.post<T>(url, data);
-      setResponseData(response.data);
-    } catch (error) {
-      console.log(error);
+
+      if (response.status === 201) {
+        setResponseData(response.data);
+      } else {
+        setError(true);
+      }
+    } catch (postError) {
+      setError(true);
     } finally {
     }
   };
 
-  return { responseData, postData };
+  return { responseData, error, postData };
 }
 
 export default usePost;

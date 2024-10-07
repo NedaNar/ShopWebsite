@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { CartItem, Item } from "../api/apiModel";
+import { useNavigate } from "react-router";
+import { toastInfo, toastSuccess } from "./toastUtils";
 
 interface CartContextProps {
   children: React.ReactNode;
@@ -8,7 +9,7 @@ interface CartContextProps {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: Item) => void;
+  addToCart: (item: Item, showToast?: boolean) => void;
   removeFromCart: (itemId: number) => void;
   clearCart: () => void;
   updateItemQuantity: (itemId: number, quantity: number) => void;
@@ -26,6 +27,7 @@ const CartContext = createContext<CartContextType>(defaultCartContext);
 
 export const CartProvider = ({ children }: CartContextProps) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
@@ -34,7 +36,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
     }
   }, []);
 
-  const addToCart = (item: Item) => {
+  const addToCart = (item: Item, showToast?: boolean) => {
     const itemInCart = cart.find((cartItem) => cartItem.id === item.id);
 
     let newCart: CartItem[];
@@ -51,20 +53,36 @@ export const CartProvider = ({ children }: CartContextProps) => {
 
     setCart(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
-    toast.success(`${item.name} added to cart!`, {
-      position: "top-center",
-      autoClose: 3000,
-    });
+    if (showToast)
+      toastSuccess(
+        <div
+          className="row"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>{`${item.name} added to cart!`}</span>
+          <button
+            className="btn-small"
+            style={{ marginLeft: "0.5rem" }}
+            onClick={() => {
+              console.log("click");
+              navigate("/cart");
+            }}
+          >
+            View Cart
+          </button>
+        </div>
+      );
   };
 
   const removeFromCart = (itemId: number) => {
     const newCart = cart.filter((item) => item.id !== itemId);
     setCart(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
-    toast.info(`Item removed from cart.`, {
-      position: "top-center",
-      autoClose: 3000,
-    });
+    toastInfo(`Item removed from cart.`);
   };
 
   const updateItemQuantity = (itemId: number, quantity: number) => {

@@ -27,6 +27,7 @@ const ShoppingCart = () => {
           </h4>
           {cart.map((item) => (
             <li
+              key={item.id}
               className="collection-item teal lighten-5"
               style={{
                 listStyle: "none",

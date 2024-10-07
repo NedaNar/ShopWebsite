@@ -9,7 +9,7 @@ const ProductDetail = () => {
   const product: Item = location.state?.product;
 
   const { addToCart } = useCart();
-  const ratings = useFetch<Rating[]>(`Rating/user/${product.id}`);
+  const ratings = useFetch<Rating[]>(`Rating/item/${product.id}`);
 
   const getAverageRating = (reviews: Rating[]) => {
     const total = reviews.reduce((sum, review) => sum + review.itemRating, 0);
@@ -39,7 +39,7 @@ const ProductDetail = () => {
           >
             {ratings && ratings.length > 0 && (
               <div className="valign-wrapper">
-                <StarRating rating={getAverageRating(ratings)} />
+                <StarRating initialRating={getAverageRating(ratings)} />
                 <span style={{ marginLeft: "0.5rem", color: "black" }}>
                   <i>{ratings.length} ratings</i>
                 </span>
@@ -61,7 +61,7 @@ const ProductDetail = () => {
           <button
             className="btn-large teal lighten-2"
             disabled={product.itemCount <= 0}
-            onClick={() => addToCart(product)}
+            onClick={() => addToCart(product, true)}
           >
             <i className="material-icons right">shopping_cart</i>Add to cart
           </button>
@@ -81,7 +81,7 @@ const ProductDetail = () => {
                 borderRadius: "1.2rem",
               }}
             >
-              <StarRating rating={rating.itemRating} />
+              <StarRating initialRating={rating.itemRating} />
               <p style={{ margin: "0.4rem 0 0" }}>{rating.comment}</p>
             </li>
           ))}

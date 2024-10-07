@@ -1,6 +1,7 @@
 ﻿using ShopAPI.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 [Table("order_item")]
 public class OrderItem
@@ -12,19 +13,18 @@ public class OrderItem
     [Required]
     public int Quantity { get; set; }
 
-    [Required]
-    public double Price { get; set; }
-
-    [Required]
+    [JsonIgnore]
+    [Column("fk_orderid")]
     public int OrderId { get; set; }
 
+    [JsonIgnore]
     [ForeignKey("OrderId")]
     public Order Order { get; set; }
 
-    [Required]
+    [Column("fk_itemid")]
     public int ItemId { get; set; }
 
     [ForeignKey("ItemId")]
-    public Item Item { get; set; }
+    public Item? Item { get; set; }
 }
 

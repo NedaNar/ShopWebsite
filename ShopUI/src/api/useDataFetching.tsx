@@ -8,7 +8,9 @@ function useFetch<T>(endpoint: string): T | null {
     const fetchData = async () => {
       try {
         const url = `https://localhost:7265/api/${endpoint}`;
+        console.log(url);
         const response = await axios.get<T>(url);
+        console.log(response);
         setData(response.data);
       } catch (error) {
         console.log(error);

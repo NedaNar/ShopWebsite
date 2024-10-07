@@ -15,13 +15,15 @@ import CheckoutPage from "./pages/Checkout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CartProvider } from "./utils/CartContext";
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer limit={1} />
       <Header />
       <BrowserRouter>
+        <ScrollToTop />
         <CartProvider>
           <Routes>
             <Route path="/" element={<Home />} />

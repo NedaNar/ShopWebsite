@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 [Table("order")]
 public class Order
@@ -9,6 +10,7 @@ public class Order
     public int Id { get; set; }
 
     [Required]
+    [Column("total_price")]
     public double TotalPrice { get; set; }
 
     [Required]
@@ -29,10 +31,12 @@ public class Order
     public string Status { get; set; }
 
     [Required]
+    [Column("fk_userid")]
     public int UserId { get; set; }
 
+    [JsonIgnore]
     [ForeignKey("UserId")]
-    public User User { get; set; }
+    public User? User { get; set; }
 
     public ICollection<OrderItem> OrderItems { get; set; }
 }

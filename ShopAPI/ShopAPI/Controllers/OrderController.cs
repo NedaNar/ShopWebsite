@@ -12,30 +12,60 @@ public class OrderController : ControllerBase
         _context = context;
     }
 
+    // WORKS
     [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] Order order)
     {
+        foreach (var item in order.OrderItems)
+        {
+            item.OrderId = order.Id;
+        }
+
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
     }
 
+    // WORKS
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
         var order = await _context.Orders
             .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Item)
             .FirstOrDefaultAsync(o => o.Id == id);
         if (order == null) return NotFound();
         return Ok(order);
     }
 
+    // WORKS
     [HttpGet]
     public async Task<IActionResult> GetAllOrders()
     {
         var orders = await _context.Orders
             .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Item)
             .ToListAsync();
+        return Ok(orders);
+    }
+
+    // WORKS
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByUserId(int userId)
+    {
+        var orders = await _context.Orders
+            .Where(o => o.UserId == userId)
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Item)
+            .ToListAsync();
+
+        if (orders == null)
+        {
+        https://localhost:7265/api/Order/user/1
+
+            return NotFound();
+        }
+
         return Ok(orders);
     }
 
