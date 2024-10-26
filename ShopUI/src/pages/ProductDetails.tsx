@@ -1,19 +1,37 @@
 import { useLocation } from "react-router-dom";
 import useFetch from "../api/useDataFetching";
-import { Item, Rating } from "../api/apiModel";
+import { Rating } from "../api/apiModel";
 import StarRating from "../components/StarRating";
 import { useCart } from "../utils/CartContext";
+import useDelete from "../api/useDataDeleting";
+import { useEffect, useState } from "react";
 
 const ProductDetail = () => {
   const location = useLocation();
-  const product: Item = location.state?.product;
+  const product = location.state?.product;
 
   const { addToCart } = useCart();
-  const ratings = useFetch<Rating[]>(`Rating/item/${product.id}`);
+  const { deleteData } = useDelete<Rating>();
+  const fetchedRatings = useFetch<Rating[]>(`Rating/item/${product.id}`);
+
+  const [ratings, setRatings] = useState<Rating[]>([]);
+
+  useEffect(() => {
+    if (fetchedRatings) {
+      setRatings(fetchedRatings);
+    }
+  }, [fetchedRatings]);
 
   const getAverageRating = (reviews: Rating[]) => {
     const total = reviews.reduce((sum, review) => sum + review.itemRating, 0);
     return Math.round(total / reviews.length);
+  };
+
+  const handleReviewDelete = (id?: number) => {
+    deleteData(`Rating/${id}`);
+    setRatings((prevRatings) =>
+      prevRatings.filter((rating) => rating.id !== id)
+    );
   };
 
   if (!product) {
@@ -25,7 +43,11 @@ const ProductDetail = () => {
       <div className="row">
         <div className="col m12 l6">
           <img
-            src={`${window.location.origin}/src/assets/images/items/${product.img}`}
+            src={
+              product.img
+                ? `${window.location.origin}/src/assets/images/items/${product.img}`
+                : `${window.location.origin}/src/assets/images/items/none.png`
+            }
             alt={product.name}
             style={{ width: "100%" }}
           />
@@ -81,8 +103,20 @@ const ProductDetail = () => {
                 borderRadius: "1.2rem",
               }}
             >
-              <StarRating initialRating={rating.itemRating} />
-              <p style={{ margin: "0.4rem 0 0" }}>{rating.comment}</p>
+              <div className="row valign-wrapper" style={{ margin: 0 }}>
+                <div className="col l11">
+                  <StarRating initialRating={rating.itemRating} />
+                  <p style={{ margin: "0.4rem 0 0" }}>{rating.comment}</p>
+                </div>
+                <div className="col l1">
+                  <button
+                    className="btn red darken-4"
+                    onClick={() => handleReviewDelete(rating.id)}
+                  >
+                    <i className="material-icons">delete_forever</i>
+                  </button>
+                </div>
+              </div>
             </li>
           ))}
         </div>

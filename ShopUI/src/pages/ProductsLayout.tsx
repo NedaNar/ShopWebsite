@@ -4,15 +4,35 @@ import { useNavigate } from "react-router";
 import useFetch from "../api/useDataFetching";
 import { Item } from "../api/apiModel";
 import { useCart } from "../utils/CartContext";
+import ItemDialog from "../components/ItemDialog";
+import { FALLBACK_IMAGE, IMAGE_PATH } from "../utils/imageUtils";
+import axios from "axios";
+import { toastError, toastSuccess } from "../utils/toastUtils";
+import usePost from "../api/useDataPosting";
+import useUpdate from "../api/useDataUpdating";
 
 export default function ProductsLayout() {
   const [selectedCategory, setselectedCategory] =
     useState<ProductCategory | null>(null);
   const [filteredItems, setFilteredItems] = useState<Item[] | null>([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [isOpen, setOpen] = useState<boolean>(false);
+  const [items, setItems] = useState<Item[]>([]);
+
   const navigate = useNavigate();
+  const {
+    responseData: postResponse,
+    error: postError,
+    postData,
+  } = usePost<Item>("Item");
+  const {
+    responseData: updateResponse,
+    error: updateError,
+    updateData,
+  } = useUpdate<Item>();
 
   const { addToCart } = useCart();
-  const items = useFetch<Item[]>("Item");
+  const fetchedItems = useFetch<Item[]>("Item");
 
   useEffect(() => {
     if (!items) {
@@ -29,10 +49,87 @@ export default function ProductsLayout() {
     );
   }, [items, selectedCategory]);
 
+  useEffect(() => {
+    if (fetchedItems) {
+      setItems(fetchedItems);
+    }
+  }, [fetchedItems]);
+
+  const handleAddNew = () => {
+    setOpen(true);
+  };
+
+  const handleEdit = (item: Item) => {
+    setSelectedItem(item);
+    setOpen(true);
+  };
+
+  const handleSave = (newItemData: Omit<Item, "id">) => {
+    if (selectedItem) {
+      const updatedItem: Item = { ...newItemData };
+      console.log(updatedItem);
+      updateData(updatedItem, `Item/${selectedItem.id}`);
+    } else {
+      const newItem: Item = { ...newItemData };
+      postData(newItem);
+    }
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (postResponse) {
+      toastSuccess("Item added!");
+      setItems([...items, postResponse]);
+    }
+  }, [postResponse]);
+
+  useEffect(() => {
+    if (updateResponse) {
+      toastSuccess("Item updated!");
+      setItems((prevItems) => {
+        return prevItems.map((item) =>
+          item.id === updateResponse.id ? updateResponse : item
+        );
+      });
+    }
+  }, [updateResponse]);
+
+  useEffect(() => {
+    if (postError || updateError) {
+      toastError();
+    }
+  }, [postError, updateError]);
+
+  const handleItemDelete = async (id: number) => {
+    try {
+      const url = `https://localhost:7265/api/Item/${id}`;
+      const response = await axios.delete<Item>(url);
+
+      if (response.status === 204) {
+        toastSuccess("Item deleted");
+        setItems((prevItems) =>
+          prevItems.filter((product) => product.id !== id)
+        );
+      }
+    } catch (postError) {
+      toastError();
+    }
+  };
+
   return (
     <div>
       <div className="container">
         <div className="row" style={{ margin: "3.2rem 1.6rem 2.4rem" }}>
+          <button
+            className="btn-large blue darken-3"
+            style={{ margin: "0 2rem 0 0" }}
+            onClick={() => handleAddNew()}
+          >
+            <div className="valign-wrapper">
+              <span>Create New Item&nbsp;</span>
+              <i className="material-icons">add</i>
+            </div>
+          </button>
           <button
             className="btn-large"
             style={{ margin: "0 0.4rem" }}
@@ -59,7 +156,10 @@ export default function ProductsLayout() {
                 <div className="card">
                   <div className="card-image ">
                     <img
-                      src={`${window.location.origin}/src/assets/images/items/${product.img}`}
+                      src={`${IMAGE_PATH}${product.img}`}
+                      onError={(e) => {
+                        e.currentTarget.src = FALLBACK_IMAGE;
+                      }}
                       alt={product.name}
                     />
                   </div>
@@ -87,6 +187,19 @@ export default function ProductsLayout() {
                       <i className="material-icons right">shopping_cart</i>Add
                       to cart
                     </button>
+                    <button
+                      className="btn teal lighten-2"
+                      onClick={() => handleEdit(product)}
+                    >
+                      <i className="material-icons right">edit</i>Edit
+                    </button>
+                    <button
+                      className="btn red darken-4"
+                      onClick={() => handleItemDelete(product.id!)}
+                      style={{ marginLeft: "1rem" }}
+                    >
+                      <i className="material-icons">delete_forever</i>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -107,6 +220,15 @@ export default function ProductsLayout() {
             ))}
         </div>
       </div>
+      <ItemDialog
+        isOpen={isOpen}
+        item={selectedItem}
+        onSave={handleSave}
+        onClose={() => {
+          setSelectedItem(null);
+          setOpen(false);
+        }}
+      />
     </div>
   );
 }

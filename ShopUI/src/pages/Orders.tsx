@@ -1,145 +1,126 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useTable, Column, HeaderGroup, Row } from "react-table";
-
-export interface OrderItem {
-  name: string;
-  quantity: number;
-  price: number;
-}
-
-export interface Order {
-  id: string;
-  customerName: string;
-  customerSurname: string;
-  address: string;
-  paymentMethod: string;
-  items: OrderItem[];
-  orderDate: string;
-  totalAmount: string;
-  status: "received" | "preparing" | "shipping" | "completed";
-}
-
-export const mockOrders: Order[] = [
-  {
-    id: "1",
-    customerName: "John",
-    customerSurname: "Doe",
-    address: "1234 Elm St, Springfield, USA",
-    paymentMethod: "Credit Card",
-    items: [
-      { name: "Laptop", quantity: 1, price: 1000 },
-      { name: "Mouse", quantity: 2, price: 50 },
-    ],
-    orderDate: "2023-09-10",
-    totalAmount: "$1100.00",
-    status: "received",
-  },
-  {
-    id: "2",
-    customerName: "Jane",
-    customerSurname: "Smith",
-    address: "5678 Oak Ave, Metropolis, USA",
-    paymentMethod: "PayPal",
-    items: [
-      { name: "Smartphone", quantity: 1, price: 800 },
-      { name: "Headphones", quantity: 1, price: 200 },
-    ],
-    orderDate: "2023-09-11",
-    totalAmount: "$1000.00",
-    status: "preparing",
-  },
-  {
-    id: "3",
-    customerName: "Alice",
-    customerSurname: "Johnson",
-    address: "9101 Pine Rd, Gotham, USA",
-    paymentMethod: "Bank Transfer",
-    items: [
-      { name: "Tablet", quantity: 2, price: 300 },
-      { name: "Stylus", quantity: 1, price: 50 },
-    ],
-    orderDate: "2023-09-12",
-    totalAmount: "$650.00",
-    status: "shipping",
-  },
-];
-
-interface OrdersTableProps {
-  data: Order[];
-}
-
-const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
-  const navigate = useNavigate();
-
-  const columns: Column<Order>[] = React.useMemo(
-    () => [
-      { Header: "Order ID", accessor: "id" },
-      { Header: "Customer Name", accessor: "customerName" },
-      { Header: "Order Date", accessor: "orderDate" },
-      { Header: "Total Amount", accessor: "totalAmount" },
-      { Header: "Status", accessor: "status" },
-      {
-        id: "actions",
-        Cell: ({ row }: { row: Row<Order> }) => (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/orders/${row.original.id}`);
-            }}
-            className="btn-small waves-effect waves-light"
-          >
-            View Details
-          </button>
-        ),
-      },
-    ],
-    [navigate]
-  );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<Order>({
-      columns,
-      data,
-    });
-
-  return (
-    <>
-      <table {...getTableProps()} className="highlight">
-        <thead>
-          {headerGroups.map((headerGroup: HeaderGroup<Order>) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row: Row<Order>) => {
-            prepareRow(row);
-            return (
-              <tr
-                {...row.getRowProps()}
-                onClick={() => navigate(`/orders/${row.original.id}`)}
-              >
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                ))}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </>
-  );
-};
+import useFetch from "../api/useDataFetching";
+import { Order, UpdateOrderDTO } from "../api/apiModel";
+import { OrderStatus } from "../utils/OrderStatus";
+import { useEffect, useState } from "react";
+import { toastError, toastSuccess } from "../utils/toastUtils";
+import useUpdate from "../api/useDataUpdating";
+import { useNavigate } from "react-router";
+import useDelete from "../api/useDataDeleting";
 
 const Orders = () => {
+  const navigate = useNavigate();
+
+  const fetchedOrders = useFetch<Order[]>(`Order`);
+  const { deleteData } = useDelete<Order>();
+  const { responseData, error, updateData } = useUpdate<UpdateOrderDTO>();
+
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    if (fetchedOrders) {
+      setOrders(fetchedOrders);
+    }
+  }, [fetchedOrders]);
+
+  useEffect(() => {
+    var elems = document.querySelectorAll("select");
+    M.FormSelect.init(elems);
+  }, [fetchedOrders]);
+
+  useEffect(() => {
+    if (responseData) {
+      toastSuccess(`Order status updated!`);
+    }
+  }, [responseData]);
+
+  useEffect(() => {
+    if (error) {
+      toastError();
+    }
+  }, [error]);
+
+  const handleStatusChange = (status: OrderStatus, id?: number) => {
+    updateData({ status }, `Order/${id}`);
+  };
+
+  const handleOrderDelete = (id?: number) => {
+    deleteData(`Order/${id}`);
+    setOrders((prevOrders) => prevOrders.filter((order) => order.id !== id));
+  };
+
   return (
     <div style={{ margin: "3.6rem 10% 9.6rem" }}>
-      <h4 style={{ textAlign: "left", margin: "0 0 3.6rem" }}>Orders</h4>
-      <OrdersTable data={mockOrders} />
+      <h4
+        style={{
+          textAlign: "left",
+          margin: "0 0 3.6rem",
+          fontWeight: "bold",
+        }}
+      >
+        Orders
+      </h4>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders?.map((order) => (
+            <tr key={order.id} style={{ cursor: "pointer" }}>
+              <td>{order.id}</td>
+              <td>{new Date(order.orderDate).toLocaleDateString("lt-LT")}</td>
+              <td>{order.totalPrice}</td>
+              <td>
+                <div className="input-field" style={{ marginRight: "2rem" }}>
+                  <select
+                    value={order.status.trim()}
+                    onChange={(e) =>
+                      handleStatusChange(
+                        e.target.value as OrderStatus,
+                        order.id
+                      )
+                    }
+                  >
+                    {Object.values(OrderStatus).map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                  <label>Order Status</label>
+                </div>
+              </td>
+              <td>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/orders/${order.id}`, {
+                      state: { order },
+                    });
+                  }}
+                  className="btn-small waves-effect waves-light"
+                >
+                  View Details
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn red darken-4"
+                  onClick={() => handleOrderDelete(order.id)}
+                >
+                  <i className="material-icons">delete_forever</i>
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

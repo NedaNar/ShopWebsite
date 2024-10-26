@@ -68,7 +68,6 @@ export const CartProvider = ({ children }: CartContextProps) => {
             className="btn-small"
             style={{ marginLeft: "0.5rem" }}
             onClick={() => {
-              console.log("click");
               navigate("/cart");
             }}
           >

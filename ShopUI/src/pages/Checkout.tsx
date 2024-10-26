@@ -30,7 +30,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (error) {
-      toastError(`Error submitting the order. Please try again later.`);
+      toastError();
     }
   }, [error]);
 
@@ -49,7 +49,6 @@ const Checkout = () => {
         itemId: product.id,
       })),
     };
-    console.log(orderData);
 
     postData(orderData);
   };

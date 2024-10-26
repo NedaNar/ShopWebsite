@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopAPI.Models;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -41,7 +39,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateItem(int id, [FromBody] Item item)
+    public async Task<IActionResult> UpdateItem(int id, [FromBody] UpdateItemDto item)
     {
         var existingItem = await _context.Items.FindAsync(id);
         if (existingItem == null) return NotFound();
@@ -60,7 +58,11 @@ public class ItemController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteItem(int id)
     {
-        var item = await _context.Items.FindAsync(id);
+        var item = await _context.Items
+            .Include(i => i.Ratings)
+            .Include(i => i.OrderItems)
+            .FirstOrDefaultAsync(i => i.Id == id);
+
         if (item == null) return NotFound();
 
         _context.Items.Remove(item);

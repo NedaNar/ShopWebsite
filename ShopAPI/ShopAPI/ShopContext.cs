@@ -14,31 +14,19 @@ public class ShopContext(DbContextOptions<ShopContext> options) : DbContext(opti
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<OrderItem>()
         .HasOne(oi => oi.Item)
-        .WithMany()  // Assuming Item does not have a navigation back to OrderItem
+        .WithMany()
         .HasForeignKey(oi => oi.ItemId);
 
-        /*modelBuilder.Entity<Order>(entity =>
-        {
-            entity.HasOne(o => o.User) // Relationship with User
-                    .WithMany() // Assuming a user can have many orders
-                    .HasForeignKey(o => o.UserId)
-                    .OnDelete(DeleteBehavior.Cascade); // Optional: Define delete behavior
+        modelBuilder.Entity<OrderItem>()
+        .HasOne(o => o.Item)
+        .WithMany(i => i.OrderItems)
+        .HasForeignKey(o => o.ItemId)
+        .OnDelete(DeleteBehavior.SetNull);
 
-            entity.HasMany(o => o.OrderItems) // One Order has many OrderItems
-                    .WithOne(oi => oi.Order) // Each OrderItem belongs to one Order
-                    .HasForeignKey(oi => oi.OrderId); // Define foreign key property
-        });
-
-        modelBuilder.Entity<OrderItem>(entity =>
-        {
-            entity.HasOne(oi => oi.Item) // Relationship with Item
-                  .WithMany() // Assuming Item can be in many OrderItems
-                  .HasForeignKey(oi => oi.ItemId)
-                  .OnDelete(DeleteBehavior.Restrict); // Optional: Define delete behavior
-
-            entity.HasOne(oi => oi.Order) // Relationship with Order
-                  .WithMany(o => o.OrderItems)
-                  .HasForeignKey(oi => oi.OrderId);
-        });*/
+        modelBuilder.Entity<Item>()
+        .HasMany(i => i.Ratings)
+        .WithOne(r => r.Item)
+        .HasForeignKey(r => r.ItemId)
+        .OnDelete(DeleteBehavior.Cascade);
     }
 }

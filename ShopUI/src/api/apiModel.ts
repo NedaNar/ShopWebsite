@@ -2,7 +2,7 @@ import { OrderStatus } from "../utils/OrderStatus";
 import { ProductCategory } from "../utils/ProductCategory";
 
 export interface Item {
-  id: number;
+  id?: number;
   name: string;
   category: ProductCategory;
   img: string;
@@ -39,4 +39,8 @@ export interface OrderItem {
   quantity: number;
   itemId: number;
   item?: Item;
+}
+
+export interface UpdateOrderDTO {
+  status: OrderStatus;
 }

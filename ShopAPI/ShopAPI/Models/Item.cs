@@ -37,5 +37,10 @@ namespace ShopAPI.Models
                 throw new ArgumentException($"Category must be one of the following: {string.Join(", ", ValidCategories)}");
             }
         }
+
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+
     }
 }

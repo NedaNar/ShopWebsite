@@ -50,6 +50,7 @@ const UserProfile: React.FC = () => {
           >
             My orders
           </p>
+
           <table>
             <thead>
               <tr>
@@ -62,15 +63,7 @@ const UserProfile: React.FC = () => {
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr
-                  key={order.id}
-                  onClick={() =>
-                    navigate(`/orders/${order.id}`, {
-                      state: { order },
-                    })
-                  }
-                  style={{ cursor: "pointer" }}
-                >
+                <tr key={order.id} style={{ cursor: "pointer" }}>
                   <td>{order.id}</td>
                   <td>
                     {new Date(order.orderDate).toLocaleDateString("lt-LT")}

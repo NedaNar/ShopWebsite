@@ -19,10 +19,10 @@ public class OrderItem
 
     [JsonIgnore]
     [ForeignKey("OrderId")]
-    public Order Order { get; set; }
+    public Order? Order { get; set; }
 
     [Column("fk_itemid")]
-    public int ItemId { get; set; }
+    public int? ItemId { get; set; }
 
     [ForeignKey("ItemId")]
     public Item? Item { get; set; }

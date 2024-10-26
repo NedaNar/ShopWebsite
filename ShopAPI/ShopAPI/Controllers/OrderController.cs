@@ -12,7 +12,6 @@ public class OrderController : ControllerBase
         _context = context;
     }
 
-    // WORKS
     [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] Order order)
     {
@@ -26,7 +25,6 @@ public class OrderController : ControllerBase
         return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
     }
 
-    // WORKS
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
@@ -38,7 +36,6 @@ public class OrderController : ControllerBase
         return Ok(order);
     }
 
-    // WORKS
     [HttpGet]
     public async Task<IActionResult> GetAllOrders()
     {
@@ -49,7 +46,6 @@ public class OrderController : ControllerBase
         return Ok(orders);
     }
 
-    // WORKS
     [HttpGet("user/{userId}")]
     public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByUserId(int userId)
     {
@@ -61,37 +57,38 @@ public class OrderController : ControllerBase
 
         if (orders == null)
         {
-        https://localhost:7265/api/Order/user/1
-
             return NotFound();
         }
 
         return Ok(orders);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateOrder(int id, [FromBody] Order order)
+    public async Task<IActionResult> UpdateOrder(int id, [FromBody] UpdateOrderStatusDto orderDto)
     {
         var existingOrder = await _context.Orders.FindAsync(id);
-        if (existingOrder == null) return NotFound();
+        if (existingOrder == null)
+            return NotFound();
 
-        existingOrder.TotalPrice = order.TotalPrice;
-        existingOrder.Address = order.Address;
-        existingOrder.PhoneNumber = order.PhoneNumber;
-        existingOrder.OrderDate = order.OrderDate;
-        existingOrder.Status = order.Status;
+        existingOrder.Status = orderDto.Status;
 
         await _context.SaveChangesAsync();
+
         return Ok(existingOrder);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
     {
-        var order = await _context.Orders.FindAsync(id);
+        var order = await _context.Orders
+            .Include(o => o.OrderItems)
+            .FirstOrDefaultAsync(o => o.Id == id);
+
         if (order == null) return NotFound();
 
+        _context.OrderItems.RemoveRange(order.OrderItems);
+
         _context.Orders.Remove(order);
+
         await _context.SaveChangesAsync();
         return NoContent();
     }

@@ -42,7 +42,7 @@ const OrderDetailsComponent = ({
 
   useEffect(() => {
     if (error) {
-      toastError(`Error! Please try again later.`);
+      toastError();
     }
   }, [error]);
 
@@ -52,7 +52,7 @@ const OrderDetailsComponent = ({
       comment: review,
       itemRating: ratingNumber,
       userId: 1,
-      itemId: orderItem.item!.id,
+      itemId: orderItem.item!.id!,
     });
   };
 
@@ -60,7 +60,6 @@ const OrderDetailsComponent = ({
     <div>
       {orderItem.item && (
         <li
-          key={orderItem.id}
           className="collection-item teal lighten-5"
           style={{
             listStyle: "none",
@@ -75,7 +74,11 @@ const OrderDetailsComponent = ({
           >
             <div className="left">
               <img
-                src={`${window.location.origin}/src/assets/images/items/${orderItem.item.img}`}
+                src={
+                  orderItem.item.img
+                    ? `${window.location.origin}/src/assets/images/items/${orderItem.item.img}`
+                    : `${window.location.origin}/src/assets/images/items/none.png`
+                }
                 style={{ width: "6.4rem" }}
               />
             </div>
@@ -132,7 +135,6 @@ const OrderDetailsComponent = ({
                     id="textarea"
                     className="materialize-textarea"
                     onChange={(e) => setReview(e.target.value)}
-                    value={review}
                   ></textarea>
                   <label htmlFor="textarea">Review</label>
                 </div>

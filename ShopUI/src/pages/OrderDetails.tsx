@@ -1,14 +1,10 @@
-import { Item, Order } from "../api/apiModel";
+import { Order } from "../api/apiModel";
 import { useLocation } from "react-router-dom";
-import useFetch from "../api/useDataFetching";
-import StarRating from "../components/StarRating";
-import { OrderStatus } from "../utils/OrderStatus";
 import OrderDetailsComponent from "../components/OrderDetailsComponent";
 
 const OrderDetails = () => {
   const location = useLocation();
   const order: Order = location.state?.order;
-
   if (!order) {
     return <div>Order not found</div>;
   }
@@ -24,9 +20,20 @@ const OrderDetails = () => {
           <p style={{ margin: "1.3rem 0 1.2rem", fontSize: "1.2rem" }}>
             Status: {order.status.toUpperCase()}
           </p>
+          <p style={{ margin: "1.3rem 0 0.6rem", fontSize: "1.2rem" }}>
+            Contact information:
+          </p>
+          <p style={{ margin: "0 0 0.4rem", fontSize: "1rem" }}>Name Surname</p>
+          <p style={{ margin: "0 0 0.4rem", fontSize: "1rem" }}>
+            Phone number: {order.phoneNumber}
+          </p>
+          <p style={{ margin: "0 0 2rem", fontSize: "1rem" }}>
+            Address: {order.address}
+          </p>
         </div>
         {order.orderItems.map((orderItem) => (
           <OrderDetailsComponent
+            key={orderItem.id}
             orderStatus={order.status}
             orderItem={orderItem}
           />

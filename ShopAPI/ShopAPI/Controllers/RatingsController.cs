@@ -29,7 +29,6 @@ public class RatingController : ControllerBase
         return Ok(rating);
     }
 
-    // WORKS
     [HttpGet("item/{itemId}")]
     public async Task<IActionResult> GetRatingsByItemId(int itemId)
     {
@@ -48,27 +47,6 @@ public class RatingController : ControllerBase
         return _context.Ratings
             .Where(r => r.UserId == userId && r.ItemId == itemId)
             .FirstOrDefault();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetAllRatings()
-    {
-        var ratings = await _context.Ratings.ToListAsync();
-        return Ok(ratings);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateRating(int id, [FromBody] Rating rating)
-    {
-        var existingRating = await _context.Ratings.FindAsync(id);
-        if (existingRating == null) return NotFound();
-
-        //existingRating.Value = rating.Value;
-        //existingRating.UserId = rating.UserId;
-        //existingRating.ItemId = rating.ItemId;
-
-        await _context.SaveChangesAsync();
-        return Ok(existingRating);
     }
 
     [HttpDelete("{id}")]
