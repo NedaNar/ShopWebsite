@@ -12,10 +12,12 @@ public class ShopContext(DbContextOptions<ShopContext> options) : DbContext(opti
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<OrderItem>()
-        .HasOne(oi => oi.Item)
-        .WithMany()
-        .HasForeignKey(oi => oi.ItemId);
+        .HasOne(oi => oi.Order) 
+        .WithMany(o => o.OrderItems)
+        .HasForeignKey(oi => oi.OrderId)
+        .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<OrderItem>()
         .HasOne(o => o.Item)
@@ -27,6 +29,12 @@ public class ShopContext(DbContextOptions<ShopContext> options) : DbContext(opti
         .HasMany(i => i.Ratings)
         .WithOne(r => r.Item)
         .HasForeignKey(r => r.ItemId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Order>()
+        .HasMany(o => o.OrderItems)
+        .WithOne(oi => oi.Order)
+        .HasForeignKey(oi => oi.OrderId)
         .OnDelete(DeleteBehavior.Cascade);
     }
 }

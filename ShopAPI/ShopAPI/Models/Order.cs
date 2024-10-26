@@ -9,28 +9,27 @@ public class Order
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Total price is required.")]
     [Column("total_price")]
+    [Range(0, double.MaxValue, ErrorMessage = "Total price must be a positive value.")]
     public double TotalPrice { get; set; }
 
-    [Required]
-    [StringLength(255)]
+    [Required(ErrorMessage = "Address is required.")]
+    [StringLength(255, ErrorMessage = "Address cannot be longer than 255 characters.")]
     public string Address { get; set; }
 
-    [Required]
-    [StringLength(255)]
+    [Required(ErrorMessage = "Phone number is required.")]
+    [StringLength(30, ErrorMessage = "Phone number cannot be longer than 30 characters.")]
     public string PhoneNumber { get; set; }
 
-    [Required]
-    [StringLength(255)]
+    [Required(ErrorMessage = "Order date is required.")]
     public string OrderDate { get; set; }
 
-    [Required]
-    [StringLength(9)]
-    [Column(TypeName = "char(9)")]
+    [Required(ErrorMessage = "Status is required.")]
+    [RegularExpression(@"^(Received|Preparing|Shipped|Completed)$", ErrorMessage = "Status must be one of the following: Received, Preparing, Shipped, Completed.")]
     public string Status { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "User ID is required.")]
     [Column("fk_userid")]
     public int UserId { get; set; }
 
@@ -38,5 +37,5 @@ public class Order
     [ForeignKey("UserId")]
     public User? User { get; set; }
 
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

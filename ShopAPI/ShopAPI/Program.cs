@@ -8,6 +8,10 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ShopDBCon")));
 
 builder.Services.AddCors();
 
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

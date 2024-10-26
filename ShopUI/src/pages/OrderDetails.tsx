@@ -31,13 +31,28 @@ const OrderDetails = () => {
             Address: {order.address}
           </p>
         </div>
-        {order.orderItems.map((orderItem) => (
-          <OrderDetailsComponent
-            key={orderItem.id}
-            orderStatus={order.status}
-            orderItem={orderItem}
-          />
-        ))}
+        {order.orderItems.map((orderItem, index) =>
+          orderItem.item ? (
+            <OrderDetailsComponent
+              key={index}
+              orderStatus={order.status}
+              orderItem={orderItem}
+            />
+          ) : (
+            <li
+              key={index}
+              className="collection-item teal lighten-5"
+              style={{
+                listStyle: "none",
+                padding: " 0.8rem 2.4rem",
+                margin: "1.2rem 0",
+                borderRadius: "1.2rem",
+              }}
+            >
+              <p>This item no longer exists :(</p>
+            </li>
+          )
+        )}
         <hr
           className="grey lighten-1"
           style={{ margin: "1.2rem 0 1.6rem" }}

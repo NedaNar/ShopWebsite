@@ -9,19 +9,20 @@ public class User
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    [Required]
-    [StringLength(255)]
+    [Required(ErrorMessage = "Name is required.")]
+    [StringLength(255, ErrorMessage = "Name cannot exceed 255 characters.")]
     public string Name { get; set; }
 
-    [Required] 
-    [StringLength(255)]
+    [Required(ErrorMessage = "Email is required.")]
+    [StringLength(255, ErrorMessage = "Email cannot exceed 255 characters.")]
+    [EmailAddress(ErrorMessage = "Invalid email format.")]
     public string Email { get; set; }
 
-    [Required]
-    [StringLength(255)]
+    [Required(ErrorMessage = "Password is required.")]
+    [StringLength(255, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
     public string Password { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Role is required.")]
     public int Role { get; set; }
 
     public ICollection<Order> Orders { get; set; }

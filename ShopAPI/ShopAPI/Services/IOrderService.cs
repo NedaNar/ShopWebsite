@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ShopAPI.Models;
-
-public interface IOrderService
+﻿public interface IOrderService
 {
     Task<Order> CreateOrderAsync(Order order);
     Task<Order> GetOrderByIdAsync(int id);

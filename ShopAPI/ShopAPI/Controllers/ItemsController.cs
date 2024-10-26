@@ -1,72 +1,67 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ShopAPI.Models;
 
 [ApiController]
 [Route("api/[controller]")]
 public class ItemController : ControllerBase
 {
-    private readonly ShopContext _context;
+    private readonly IItemService _itemService;
 
-    public ItemController(ShopContext context)
+    public ItemController(IItemService itemService)
     {
-        _context = context;
+        _itemService = itemService;
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(Item), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateItem([FromBody] Item item)
     {
-        _context.Items.Add(item);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetItemById), new { id = item.Id }, item);
+        var createdItem = await _itemService.CreateItemAsync(item);
+        return CreatedAtAction(nameof(GetItemById), new { id = createdItem.Id }, createdItem);
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Item), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetItemById(int id)
     {
-        var item = await _context.Items.FindAsync(id);
+        var item = await _itemService.GetItemByIdAsync(id);
         if (item == null) return NotFound();
         return Ok(item);
     }
 
-
-    // WORKS
     [HttpGet]
+    [ProducesResponseType(typeof(List<Item>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllItems()
     {
-        var items = await _context.Items.ToListAsync();
+        var items = await _itemService.GetAllItemsAsync();
         return Ok(items);
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(typeof(Item), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateItem(int id, [FromBody] UpdateItemDto item)
     {
-        var existingItem = await _context.Items.FindAsync(id);
-        if (existingItem == null) return NotFound();
-
-        existingItem.Name = item.Name;
-        existingItem.Price = item.Price;
-        existingItem.ItemCount = item.ItemCount;
-        existingItem.Img = item.Img;
-        existingItem.Descr = item.Descr;
-        existingItem.Category = item.Category;
-
-        await _context.SaveChangesAsync();
-        return Ok(existingItem);
+        var updatedItem = await _itemService.UpdateItemAsync(id, item);
+        if (updatedItem == null) return NotFound();
+        return Ok(updatedItem);
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteItem(int id)
     {
-        var item = await _context.Items
-            .Include(i => i.Ratings)
-            .Include(i => i.OrderItems)
-            .FirstOrDefaultAsync(i => i.Id == id);
-
-        if (item == null) return NotFound();
-
-        _context.Items.Remove(item);
-        await _context.SaveChangesAsync();
+        var deleted = await _itemService.DeleteItemAsync(id);
+        if (!deleted) return NotFound();
         return NoContent();
     }
 }

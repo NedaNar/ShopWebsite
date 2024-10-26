@@ -11,14 +11,16 @@ namespace ShopAPI.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [StringLength(255)]
+        [Required(ErrorMessage = "Comment is required.")]
+        [StringLength(255, ErrorMessage = "Comment cannot exceed 255 characters.")]
         public string Comment { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Rating is required.")]
         [Column("rating")]
+        [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5.")]
         public int ItemRating { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "User ID is required.")]
         [Column("fk_userid")]
         public int UserId { get; set; }
 
@@ -26,7 +28,7 @@ namespace ShopAPI.Models
         [ForeignKey("UserId")]
         public User? User { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Item ID is required.")]
         [Column("fk_itemid")]
         public int ItemId { get; set; }
 

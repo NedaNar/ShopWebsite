@@ -1,95 +1,77 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
 public class OrderController : ControllerBase
 {
-    private readonly ShopContext _context;
+    private readonly IOrderService _orderService;
 
-    public OrderController(ShopContext context)
+    public OrderController(IOrderService orderService)
     {
-        _context = context;
+        _orderService = orderService;
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(Order), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateOrder([FromBody] Order order)
     {
-        foreach (var item in order.OrderItems)
-        {
-            item.OrderId = order.Id;
-        }
-
-        _context.Orders.Add(order);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
+        var createdOrder = await _orderService.CreateOrderAsync(order);
+        return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.Id }, createdOrder);
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetOrderById(int id)
     {
-        var order = await _context.Orders
-            .Include(o => o.OrderItems)
-            .ThenInclude(oi => oi.Item)
-            .FirstOrDefaultAsync(o => o.Id == id);
+        var order = await _orderService.GetOrderByIdAsync(id);
         if (order == null) return NotFound();
         return Ok(order);
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<Order>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllOrders()
     {
-        var orders = await _context.Orders
-            .Include(o => o.OrderItems)
-            .ThenInclude(oi => oi.Item)
-            .ToListAsync();
+        var orders = await _orderService.GetAllOrdersAsync();
         return Ok(orders);
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByUserId(int userId)
+    [ProducesResponseType(typeof(List<Order>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetOrdersByUserId(int userId)
     {
-        var orders = await _context.Orders
-            .Where(o => o.UserId == userId)
-            .Include(o => o.OrderItems)
-            .ThenInclude(oi => oi.Item)
-            .ToListAsync();
-
-        if (orders == null)
-        {
-            return NotFound();
-        }
-
+        var orders = await _orderService.GetOrdersByUserIdAsync(userId);
+        if (orders == null || !orders.Any()) return NotFound();
         return Ok(orders);
     }
 
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateOrder(int id, [FromBody] UpdateOrderStatusDto orderDto)
     {
-        var existingOrder = await _context.Orders.FindAsync(id);
-        if (existingOrder == null)
-            return NotFound();
-
-        existingOrder.Status = orderDto.Status;
-
-        await _context.SaveChangesAsync();
-
-        return Ok(existingOrder);
+        var updatedOrder = await _orderService.UpdateOrderStatusAsync(id, orderDto);
+        if (updatedOrder == null) return NotFound();
+        return Ok(updatedOrder);
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteOrder(int id)
     {
-        var order = await _context.Orders
-            .Include(o => o.OrderItems)
-            .FirstOrDefaultAsync(o => o.Id == id);
-
-        if (order == null) return NotFound();
-
-        _context.OrderItems.RemoveRange(order.OrderItems);
-
-        _context.Orders.Remove(order);
-
-        await _context.SaveChangesAsync();
+        var deleted = await _orderService.DeleteOrderAsync(id);
+        if (!deleted) return NotFound();
         return NoContent();
     }
 }

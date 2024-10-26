@@ -1,62 +1,68 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ShopAPI.Models;
 
 [ApiController]
 [Route("api/[controller]")]
 public class RatingController : ControllerBase
 {
-    private readonly ShopContext _context;
+    private readonly IRatingService _ratingService;
 
-    public RatingController(ShopContext context)
+    public RatingController(IRatingService ratingService)
     {
-        _context = context;
+        _ratingService = ratingService;
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(Rating), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateRating([FromBody] Rating rating)
     {
-        _context.Ratings.Add(rating);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetRatingById), new { id = rating.Id }, rating);
+        var createdRating = await _ratingService.CreateRatingAsync(rating);
+        return CreatedAtAction(nameof(GetRatingById), new { id = createdRating.Id }, createdRating);
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Rating), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetRatingById(int id)
     {
-        var rating = await _context.Ratings.FindAsync(id);
+        var rating = await _ratingService.GetRatingByIdAsync(id);
         if (rating == null) return NotFound();
         return Ok(rating);
     }
 
     [HttpGet("item/{itemId}")]
+    [ProducesResponseType(typeof(List<Rating>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetRatingsByItemId(int itemId)
     {
-        var ratings = await _context.Ratings
-                                    .Where(r => r.ItemId == itemId)
-                                    .ToListAsync();
-
-        if (ratings == null) return NotFound();
-
+        var ratings = await _ratingService.GetRatingsByItemIdAsync(itemId);
+        if (ratings == null || !ratings.Any()) return NotFound();
         return Ok(ratings);
     }
 
     [HttpGet("item/{itemId}/user/{userId}")]
-    public Rating? GetRatingByUserAndItem(int userId, int itemId)
+    [ProducesResponseType(typeof(Rating), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetRatingByUserAndItem(int userId, int itemId)
     {
-        return _context.Ratings
-            .Where(r => r.UserId == userId && r.ItemId == itemId)
-            .FirstOrDefault();
+        var rating = await _ratingService.GetRatingByUserAndItemAsync(userId, itemId);
+        if (rating == null) return NotFound();
+        return Ok(rating);
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteRating(int id)
     {
-        var rating = await _context.Ratings.FindAsync(id);
-        if (rating == null) return NotFound();
-
-        _context.Ratings.Remove(rating);
-        await _context.SaveChangesAsync();
+        var deleted = await _ratingService.DeleteRatingAsync(id);
+        if (!deleted) return NotFound();
         return NoContent();
     }
 }
