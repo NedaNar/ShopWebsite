@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { useCart } from "../utils/CartContext";
 import { useEffect, useState } from "react";
 import usePost from "../api/useDataPosting";
@@ -20,24 +19,10 @@ const Checkout = () => {
     0
   );
 
-  useEffect(() => {
-    if (responseData) {
-      clearCart();
-      toastSuccess(`Order submitted successfully!`);
-      navigate("/profile");
-    }
-  }, [responseData]);
-
-  useEffect(() => {
-    if (error) {
-      toastError();
-    }
-  }, [error]);
-
   const handleOrder = (e: any) => {
     e.preventDefault();
 
-    const orderData = {
+    const orderData: Order = {
       totalPrice: totalPrice,
       address: address,
       phoneNumber: phone,
@@ -52,6 +37,20 @@ const Checkout = () => {
 
     postData(orderData);
   };
+
+  useEffect(() => {
+    if (responseData) {
+      clearCart();
+      toastSuccess(`Order submitted successfully!`);
+      navigate("/profile");
+    }
+  }, [responseData]);
+
+  useEffect(() => {
+    if (error) {
+      toastError();
+    }
+  }, [error]);
 
   return (
     <div style={{ margin: "3.6rem 10% 9.6rem" }}>

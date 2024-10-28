@@ -12,6 +12,21 @@ public class OrderService : IOrderService
     public async Task<Order> CreateOrderAsync(Order order)
     {
         _context.Orders.Add(order);
+
+        foreach (var orderItem in order.OrderItems)
+        {
+            var item = await _context.Items.FindAsync(orderItem.ItemId);
+
+            if (item != null && item.ItemCount >= orderItem.Quantity)
+            {
+                item.ItemCount -= orderItem.Quantity;
+            }
+            else
+            {
+                throw new InvalidOperationException("Not enough stock available for item ID " + orderItem.ItemId);
+            }
+        }
+
         await _context.SaveChangesAsync();
         return order;
     }

@@ -10,12 +10,7 @@ interface ItemDialogProps {
   onClose: () => void;
 }
 
-const ItemDialog: React.FC<ItemDialogProps> = ({
-  item,
-  onSave,
-  isOpen,
-  onClose,
-}) => {
+const ItemDialog = ({ item, onSave, isOpen, onClose }: ItemDialogProps) => {
   const [name, setName] = useState<string>(item?.name || "");
   const [category, setCategory] = useState<string>(item?.category || "Sticker");
   const [img, setImg] = useState<string>(item?.img || "");
@@ -36,19 +31,6 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
     }
   }, [item]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newItem: Item = {
-      name,
-      category: category.trim() as ProductCategory,
-      img,
-      descr,
-      price: parseFloat(price.toString()),
-      itemCount: parseInt(itemCount.toString()),
-    };
-    onSave(newItem);
-  };
-
   useEffect(() => {
     const modalElement = document.querySelector(".modal");
     if (modalElement) {
@@ -56,11 +38,12 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
         onCloseEnd: onClose,
       });
 
+      M.updateTextFields();
+
       if (isOpen) {
         modalInstance.open();
         const elems = document.querySelectorAll("select");
         M.FormSelect.init(elems);
-        M.updateTextFields();
       } else {
         modalInstance.close();
       }
@@ -75,6 +58,28 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
     const textarea = document.querySelector(".materialize-textarea");
     if (textarea) M.textareaAutoResize(textarea);
   }, [descr]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newItem: Item = {
+      name,
+      category: category.trim() as ProductCategory,
+      img,
+      descr,
+      price: parseFloat(price.toString()),
+      itemCount: parseInt(itemCount.toString()),
+    };
+    onSave(newItem);
+  };
+
+  const clearData = () => {
+    setName("");
+    setCategory("Sticker");
+    setImg("");
+    setDescr("");
+    setPrice("");
+    setItemCount("");
+  };
 
   return (
     <div id="item-dialog" className={`modal ${isOpen ? "open" : ""}`}>
@@ -182,7 +187,10 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
           <button
             type="button"
             className="modal-close btn-flat"
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              clearData();
+            }}
           >
             Cancel
           </button>

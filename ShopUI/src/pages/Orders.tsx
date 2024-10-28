@@ -11,10 +11,24 @@ const Orders = () => {
   const navigate = useNavigate();
 
   const fetchedOrders = useFetch<Order[]>(`Order`);
-  const { deleteData } = useDelete<Order>();
+  const { deleteData, deleted } = useDelete<Order>();
   const { responseData, error, updateData } = useUpdate<UpdateOrderDTO>();
 
   const [orders, setOrders] = useState<Order[]>([]);
+  const [toDeleteId, setToDeleteId] = useState<number | undefined>(undefined);
+
+  const handleStatusChange = (status: OrderStatus, id?: number) => {
+    updateData({ status }, `Order/${id}`);
+  };
+
+  const handleOrderDelete = (id?: number) => {
+    setToDeleteId(id);
+    if (!window.confirm("Are you sure you want to delete?")) {
+      return;
+    }
+
+    deleteData(`Order/${id}`);
+  };
 
   useEffect(() => {
     if (fetchedOrders) {
@@ -25,7 +39,7 @@ const Orders = () => {
   useEffect(() => {
     var elems = document.querySelectorAll("select");
     M.FormSelect.init(elems);
-  }, [fetchedOrders]);
+  }, [orders]);
 
   useEffect(() => {
     if (responseData) {
@@ -39,14 +53,13 @@ const Orders = () => {
     }
   }, [error]);
 
-  const handleStatusChange = (status: OrderStatus, id?: number) => {
-    updateData({ status }, `Order/${id}`);
-  };
-
-  const handleOrderDelete = (id?: number) => {
-    deleteData(`Order/${id}`);
-    setOrders((prevOrders) => prevOrders.filter((order) => order.id !== id));
-  };
+  useEffect(() => {
+    if (deleted) {
+      setOrders((prevOrders) =>
+        prevOrders.filter((order) => order.id !== toDeleteId)
+      );
+    }
+  }, [deleted]);
 
   return (
     <div style={{ margin: "3.6rem 10% 9.6rem" }}>

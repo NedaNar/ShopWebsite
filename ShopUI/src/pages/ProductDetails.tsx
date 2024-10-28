@@ -5,22 +5,18 @@ import StarRating from "../components/StarRating";
 import { useCart } from "../utils/CartContext";
 import useDelete from "../api/useDataDeleting";
 import { useEffect, useState } from "react";
+import { FALLBACK_IMAGE } from "../utils/imageUtils";
 
 const ProductDetail = () => {
   const location = useLocation();
   const product = location.state?.product;
 
   const { addToCart } = useCart();
-  const { deleteData } = useDelete<Rating>();
+  const { deleteData, deleted } = useDelete<Rating>();
   const fetchedRatings = useFetch<Rating[]>(`Rating/item/${product.id}`);
 
   const [ratings, setRatings] = useState<Rating[]>([]);
-
-  useEffect(() => {
-    if (fetchedRatings) {
-      setRatings(fetchedRatings);
-    }
-  }, [fetchedRatings]);
+  const [toDeleteId, setToDeleteId] = useState<number | undefined>(undefined);
 
   const getAverageRating = (reviews: Rating[]) => {
     const total = reviews.reduce((sum, review) => sum + review.itemRating, 0);
@@ -28,11 +24,27 @@ const ProductDetail = () => {
   };
 
   const handleReviewDelete = (id?: number) => {
+    setToDeleteId(id);
+    if (!window.confirm("Are you sure you want to delete?")) {
+      return;
+    }
+
     deleteData(`Rating/${id}`);
-    setRatings((prevRatings) =>
-      prevRatings.filter((rating) => rating.id !== id)
-    );
   };
+
+  useEffect(() => {
+    if (fetchedRatings) {
+      setRatings(fetchedRatings);
+    }
+  }, [fetchedRatings]);
+
+  useEffect(() => {
+    if (deleted) {
+      setRatings((prevRatings) =>
+        prevRatings.filter((rating) => rating.id !== toDeleteId)
+      );
+    }
+  }, [deleted]);
 
   if (!product) {
     return <div>Product not found</div>;
@@ -43,11 +55,10 @@ const ProductDetail = () => {
       <div className="row">
         <div className="col m12 l6">
           <img
-            src={
-              product.img
-                ? `${window.location.origin}/src/assets/images/items/${product.img}`
-                : `${window.location.origin}/src/assets/images/items/none.png`
-            }
+            src={product.img}
+            onError={(e) => {
+              e.currentTarget.src = FALLBACK_IMAGE;
+            }}
             alt={product.name}
             style={{ width: "100%" }}
           />

@@ -5,11 +5,11 @@ import useFetch from "../api/useDataFetching";
 import { Item } from "../api/apiModel";
 import { useCart } from "../utils/CartContext";
 import ItemDialog from "../components/ItemDialog";
-import { FALLBACK_IMAGE, IMAGE_PATH } from "../utils/imageUtils";
-import axios from "axios";
+import { FALLBACK_IMAGE } from "../utils/imageUtils";
 import { toastError, toastSuccess } from "../utils/toastUtils";
 import usePost from "../api/useDataPosting";
 import useUpdate from "../api/useDataUpdating";
+import useDelete from "../api/useDataDeleting";
 
 export default function ProductsLayout() {
   const [selectedCategory, setselectedCategory] =
@@ -18,6 +18,7 @@ export default function ProductsLayout() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
   const [items, setItems] = useState<Item[]>([]);
+  const [toDeleteId, setToDeleteId] = useState<number | undefined>(undefined);
 
   const navigate = useNavigate();
   const {
@@ -33,6 +34,42 @@ export default function ProductsLayout() {
 
   const { addToCart } = useCart();
   const fetchedItems = useFetch<Item[]>("Item");
+  const { deleteData, deleted } = useDelete<Item>();
+
+  const handleAddNew = () => {
+    setOpen(true);
+  };
+
+  const handleEdit = (item: Item) => {
+    setSelectedItem(item);
+    setOpen(true);
+  };
+
+  const handleSave = (newItemData: Omit<Item, "id">) => {
+    if (selectedItem) {
+      const updatedItem: Item = {
+        ...newItemData,
+        price: Math.round(newItemData.price * 100) / 100,
+      };
+      updateData(updatedItem, `Item/${selectedItem.id}`);
+    } else {
+      const newItem: Item = {
+        ...newItemData,
+        price: Math.round(newItemData.price * 100) / 100,
+      };
+      postData(newItem);
+    }
+    setOpen(false);
+  };
+
+  const handleItemDelete = async (id: number) => {
+    setToDeleteId(id);
+    if (!window.confirm("Are you sure you want to delete?")) {
+      return;
+    }
+
+    deleteData(`Item/${id}`);
+  };
 
   useEffect(() => {
     if (!items) {
@@ -55,26 +92,13 @@ export default function ProductsLayout() {
     }
   }, [fetchedItems]);
 
-  const handleAddNew = () => {
-    setOpen(true);
-  };
-
-  const handleEdit = (item: Item) => {
-    setSelectedItem(item);
-    setOpen(true);
-  };
-
-  const handleSave = (newItemData: Omit<Item, "id">) => {
-    if (selectedItem) {
-      const updatedItem: Item = { ...newItemData };
-      console.log(updatedItem);
-      updateData(updatedItem, `Item/${selectedItem.id}`);
-    } else {
-      const newItem: Item = { ...newItemData };
-      postData(newItem);
+  useEffect(() => {
+    if (deleted) {
+      setItems((prevItems) =>
+        prevItems.filter((product) => product.id !== toDeleteId)
+      );
     }
-    setOpen(false);
-  };
+  }, [deleted]);
 
   useEffect(() => {
     if (postResponse) {
@@ -99,22 +123,6 @@ export default function ProductsLayout() {
       toastError();
     }
   }, [postError, updateError]);
-
-  const handleItemDelete = async (id: number) => {
-    try {
-      const url = `https://localhost:7265/api/Item/${id}`;
-      const response = await axios.delete<Item>(url);
-
-      if (response.status === 204) {
-        toastSuccess("Item deleted");
-        setItems((prevItems) =>
-          prevItems.filter((product) => product.id !== id)
-        );
-      }
-    } catch (postError) {
-      toastError();
-    }
-  };
 
   return (
     <div>
@@ -156,7 +164,7 @@ export default function ProductsLayout() {
                 <div className="card">
                   <div className="card-image ">
                     <img
-                      src={`${IMAGE_PATH}${product.img}`}
+                      src={product.img}
                       onError={(e) => {
                         e.currentTarget.src = FALLBACK_IMAGE;
                       }}

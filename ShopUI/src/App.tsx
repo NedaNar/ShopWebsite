@@ -20,7 +20,7 @@ import ScrollToTop from "./utils/ScrollToTop";
 function App() {
   return (
     <>
-      <ToastContainer limit={1} />
+      <ToastContainer />
       <Header />
       <BrowserRouter>
         <ScrollToTop />

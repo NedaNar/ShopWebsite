@@ -1,5 +1,6 @@
 import { CartItem } from "../api/apiModel";
 import { useCart } from "../utils/CartContext";
+import { FALLBACK_IMAGE } from "../utils/imageUtils";
 
 interface SmallProductComponentProps {
   item: CartItem;
@@ -25,11 +26,10 @@ const SmallProductComponent = ({ item }: SmallProductComponentProps) => {
       >
         <div className="left">
           <img
-            src={
-              item.img
-                ? `${window.location.origin}/src/assets/images/items/${item.img}`
-                : `${window.location.origin}/src/assets/images/items/`
-            }
+            src={item.img}
+            onError={(e) => {
+              e.currentTarget.src = FALLBACK_IMAGE;
+            }}
             alt={item.name}
             style={{ width: "9.6rem" }}
           />

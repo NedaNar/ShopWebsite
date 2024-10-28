@@ -37,7 +37,7 @@ export interface Order {
 export interface OrderItem {
   id?: number;
   quantity: number;
-  itemId: number;
+  itemId?: number;
   item?: Item;
 }
 

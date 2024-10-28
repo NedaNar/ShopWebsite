@@ -19,7 +19,7 @@ namespace ShopAPI.Models
         public string Img { get; set; }
 
         [Required(ErrorMessage = "Price is required.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be a positive value.")]
+        [Range(0, double.MaxValue, ErrorMessage = "Price must be a positive value.")]
         public double Price { get; set; }
 
         [Required(ErrorMessage = "Item count is required.")]

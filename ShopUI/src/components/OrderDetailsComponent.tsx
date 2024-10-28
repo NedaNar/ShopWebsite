@@ -5,6 +5,7 @@ import StarRating from "./StarRating";
 import usePost from "../api/useDataPosting";
 import { toastError, toastSuccess } from "../utils/toastUtils";
 import useFetch from "../api/useDataFetching";
+import { FALLBACK_IMAGE } from "../utils/imageUtils";
 
 interface OrderDetailsComponentProps {
   orderItem: OrderItem;
@@ -20,11 +21,20 @@ const OrderDetailsComponent = ({
   const [hasRating, setHasRating] = useState(false);
 
   const { responseData, error, postData } = usePost<Rating>("Rating");
-
   const rating = useFetch<Rating>(`Rating/item/${orderItem.item!.id}/user/1`);
 
   const handleRatingChange = (newRating: number) => {
     setRatingNumber(newRating);
+  };
+
+  const submitReview = (e: any) => {
+    e.preventDefault();
+    postData({
+      comment: review,
+      itemRating: ratingNumber,
+      userId: 1,
+      itemId: orderItem.item!.id!,
+    });
   };
 
   useEffect(() => {
@@ -46,16 +56,6 @@ const OrderDetailsComponent = ({
     }
   }, [error]);
 
-  const submitReview = (e: any) => {
-    e.preventDefault();
-    postData({
-      comment: review,
-      itemRating: ratingNumber,
-      userId: 1,
-      itemId: orderItem.item!.id!,
-    });
-  };
-
   return (
     <div>
       {orderItem.item && (
@@ -74,11 +74,10 @@ const OrderDetailsComponent = ({
           >
             <div className="left">
               <img
-                src={
-                  orderItem.item.img
-                    ? `${window.location.origin}/src/assets/images/items/${orderItem.item.img}`
-                    : `${window.location.origin}/src/assets/images/items/none.png`
-                }
+                src={orderItem.item.img}
+                onError={(e) => {
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
                 style={{ width: "6.4rem" }}
               />
             </div>
