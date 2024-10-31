@@ -30,7 +30,7 @@ export default function ProductsLayout() {
     responseData: updateResponse,
     error: updateError,
     updateData,
-  } = useUpdate<Item>();
+  } = useUpdate<Item, Item>();
 
   const { addToCart } = useCart();
   const fetchedItems = useFetch<Item[]>("Item");

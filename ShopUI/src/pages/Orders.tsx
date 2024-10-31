@@ -12,7 +12,7 @@ const Orders = () => {
 
   const fetchedOrders = useFetch<Order[]>(`Order`);
   const { deleteData, deleted } = useDelete<Order>();
-  const { responseData, error, updateData } = useUpdate<UpdateOrderDTO>();
+  const { responseData, error, updateData } = useUpdate<UpdateOrderDTO, Order>();
 
   const [orders, setOrders] = useState<Order[]>([]);
   const [toDeleteId, setToDeleteId] = useState<number | undefined>(undefined);
@@ -44,6 +44,13 @@ const Orders = () => {
   useEffect(() => {
     if (responseData) {
       toastSuccess(`Order status updated!`);
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === responseData.id
+            ? { ...order, status: responseData.status }
+            : order
+        )
+      );
     }
   }, [responseData]);
 

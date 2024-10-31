@@ -104,8 +104,9 @@ const ProductDetail = () => {
         <div style={{ margin: "2.4rem 0.8rem" }}>
           <hr />
           <h5 style={{ margin: "2.4rem 0" }}>Reviews</h5>
-          {ratings.map((rating) => (
+          {ratings.map((rating, index) => (
             <li
+              key={index}
               className="collection-item teal lighten-5"
               style={{
                 listStyle: "none",

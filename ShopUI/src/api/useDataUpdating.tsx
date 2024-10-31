@@ -1,20 +1,23 @@
 import { useState } from "react";
 import axios from "axios";
 
-interface PutResult<T> {
-  responseData: T | null;
+interface PutResult<RequestType, ResponseType> {
+  responseData: ResponseType | null;
   error: boolean;
-  updateData: (data: T, endpoint: string) => void;
+  updateData: (data: RequestType, endpoint: string) => void;
 }
 
-function useUpdate<T>(): PutResult<T> {
-  const [responseData, setResponseData] = useState<T | null>(null);
+function useUpdate<RequestType, ResponseType>(): PutResult<
+  RequestType,
+  ResponseType
+> {
+  const [responseData, setResponseData] = useState<ResponseType | null>(null);
   const [error, setError] = useState(false);
 
-  const updateData = async (data: T, endpoint: string) => {
+  const updateData = async (data: RequestType, endpoint: string) => {
     try {
       const url = `https://localhost:7265/api/${endpoint}`;
-      const response = await axios.put<T>(url, data);
+      const response = await axios.put<ResponseType>(url, data);
 
       if (
         response.status === 201 ||
