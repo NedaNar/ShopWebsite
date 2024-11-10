@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
   const [user, setUser] = useState<User | null>(getUser(token));
 
-  const apiUrl = "https://localhost:7265/backend/auth";
+  const apiUrl = "https://localhost:7265/api/auth";
 
   const signUp = async (name: string, email: string, password: string) => {
     try {

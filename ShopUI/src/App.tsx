@@ -40,7 +40,22 @@ function App() {
                 }
               />
               <Route path="/orders" element={<Orders />} />
-              <Route path="/orders/:id" element={<OrderDetails />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute loggedIn={true} requiredRole="user">
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders/:id"
+                element={
+                  <ProtectedRoute loggedIn={true} requiredRole="user">
+                    <OrderDetails />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/profile"
                 element={

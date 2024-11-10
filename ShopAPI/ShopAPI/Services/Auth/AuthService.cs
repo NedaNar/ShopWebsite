@@ -13,6 +13,11 @@ public sealed class AuthService : IAuthService
         _context = context;
     }
 
+    public async Task<User> GetUserByIdAsync(int id)
+    {
+        return await _context.Users.FindAsync(id);
+    }
+
     public async Task<IActionResult> SignUp(SignUpModel model)
     {
         var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);

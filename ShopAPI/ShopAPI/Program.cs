@@ -1,16 +1,23 @@
 using Microsoft.EntityFrameworkCore;
+using ShopAPI.SMTP;
+using AutoMapper;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+
 builder.Services.AddDbContext<ShopContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ShopDBCon")));
-
 builder.Services.AddCors();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

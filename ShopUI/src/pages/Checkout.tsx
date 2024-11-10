@@ -5,12 +5,14 @@ import { Order } from "../api/apiModel";
 import { OrderStatus } from "../utils/OrderStatus";
 import { useNavigate } from "react-router";
 import { toastError, toastSuccess } from "../utils/toastUtils";
+import { useAuth } from "../utils/AuthContext";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { cart, clearCart } = useCart();
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  const { user } = useAuth();
 
   const { responseData, error, postData } = usePost<Order>("Order");
 
@@ -28,7 +30,7 @@ const Checkout = () => {
       phoneNumber: phone,
       orderDate: new Date().toISOString(),
       status: OrderStatus.Received,
-      userId: 1,
+      userId: user!.id,
       orderItems: cart.map((product) => ({
         quantity: product.quantity,
         itemId: product.id,

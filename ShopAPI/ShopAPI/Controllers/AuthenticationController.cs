@@ -1,17 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ShopAPI.DataTransferObjects;
 using ShopAPI.Models.Auth;
 
 namespace ShopAPI.Controllers
 {
     [ApiController]
-    [Route("backend/auth")]
+    [Route("api/auth")]
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
 
-        public AuthenticationController(IAuthService authService)
+        public AuthenticationController(IAuthService authService, IMapper mapper)
         {
             _authService = authService;
+            _mapper = mapper;
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(GetUserDTO), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _authService.GetUserByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var userDto = _mapper.Map<GetUserDTO>(user);
+            return Ok(userDto);
         }
 
         [HttpPost("signup")]

@@ -3,60 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\shopcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\shopcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\itemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\itemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\controllers\\itemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\controllers\\itemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\iitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\iitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\ratingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\ratingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\iratingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\iratingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\models\\rating.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\models\\rating.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\datatransferobjects\\updateorderstatusdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\datatransferobjects\\updateorderstatusdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -65,190 +13,20 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 327,
-          "SelectedChildIndex": 1,
+          "DockedWidth": 402,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Item.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\Item.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Models\\Item.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\Item.cs",
-              "RelativeToolTip": "ShopAPI\\Models\\Item.cs",
-              "ViewState": "AQIAABMAAAAAAAAAAAAYwCoAAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:35:11.47Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ShopContext.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\ShopContext.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\ShopContext.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\ShopContext.cs",
-              "RelativeToolTip": "ShopAPI\\ShopContext.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T18:10:20.333Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "OrderService.cs",
               "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\OrderService.cs",
               "RelativeDocumentMoniker": "ShopAPI\\Services\\OrderService.cs",
               "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\OrderService.cs",
               "RelativeToolTip": "ShopAPI\\Services\\OrderService.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAAAQwB8AAABaAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAiwCgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T18:02:35.679Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Program.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Program.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Program.cs",
-              "RelativeToolTip": "ShopAPI\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:52:59.457Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ItemService.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\ItemService.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Services\\ItemService.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\ItemService.cs",
-              "RelativeToolTip": "ShopAPI\\Services\\ItemService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAA2AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:52:37.708Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "IItemService.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\IItemService.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Services\\IItemService.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\IItemService.cs",
-              "RelativeToolTip": "ShopAPI\\Services\\IItemService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAQAAAAeAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:50:39.581Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ItemsController.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Controllers\\ItemsController.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Controllers\\ItemsController.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Controllers\\ItemsController.cs",
-              "RelativeToolTip": "ShopAPI\\Controllers\\ItemsController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAsAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:50:32.978Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "RatingService.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\RatingService.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Services\\RatingService.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\RatingService.cs",
-              "RelativeToolTip": "ShopAPI\\Services\\RatingService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:46:43.377Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "IRatingService.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\IRatingService.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Services\\IRatingService.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\IRatingService.cs",
-              "RelativeToolTip": "ShopAPI\\Services\\IRatingService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:46:42.025Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\User.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Models\\User.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\User.cs",
-              "RelativeToolTip": "ShopAPI\\Models\\User.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:45:14.76Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Rating.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\Rating.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Models\\Rating.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\Rating.cs",
-              "RelativeToolTip": "ShopAPI\\Models\\Rating.cs",
-              "ViewState": "AQIAAAQAAAAAAAAAAAAiwBsAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:43:35.872Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OrderItem.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\OrderItem.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Models\\OrderItem.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\OrderItem.cs",
-              "RelativeToolTip": "ShopAPI\\Models\\OrderItem.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAiwBwAAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:42:11.679Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "UpdateOrderStatusDto.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\DataTransferObjects\\UpdateOrderStatusDto.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\DataTransferObjects\\UpdateOrderStatusDto.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\DataTransferObjects\\UpdateOrderStatusDto.cs",
-              "RelativeToolTip": "ShopAPI\\DataTransferObjects\\UpdateOrderStatusDto.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:41:46.166Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Order.cs",
-              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\Order.cs",
-              "RelativeDocumentMoniker": "ShopAPI\\Models\\Order.cs",
-              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Models\\Order.cs",
-              "RelativeToolTip": "ShopAPI\\Models\\Order.cs",
-              "ViewState": "AQIAAA8AAAAAAAAAAAAYwCcAAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T17:35:10.165Z",
+              "WhenOpened": "2024-11-10T12:04:00.29Z",
               "EditorCaption": ""
             }
           ]

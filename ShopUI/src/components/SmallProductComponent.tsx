@@ -56,9 +56,15 @@ const SmallProductComponent = ({ item }: SmallProductComponentProps) => {
         >
           <button
             className="btn-small teal lighten-2"
-            onClick={() => addToCart(item)}
+            onClick={() => {
+              if (item.quantity > 1) {
+                updateItemQuantity(item.id!, item.quantity - 1);
+              } else {
+                removeFromCart(item.id!);
+              }
+            }}
           >
-            <i className="material-icons">add</i>
+            <i className="material-icons">remove</i>
           </button>
           <p
             style={{
@@ -76,15 +82,9 @@ const SmallProductComponent = ({ item }: SmallProductComponentProps) => {
           <button
             className="btn-small teal lighten-2"
             style={{ margin: "0 2rem 0 0" }}
-            onClick={() => {
-              if (item.quantity > 1) {
-                updateItemQuantity(item.id!, item.quantity - 1);
-              } else {
-                removeFromCart(item.id!);
-              }
-            }}
+            onClick={() => addToCart(item)}
           >
-            <i className="material-icons">remove</i>
+            <i className="material-icons">add</i>
           </button>
 
           <p

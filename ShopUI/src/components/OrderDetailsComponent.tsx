@@ -6,6 +6,7 @@ import usePost from "../api/useDataPosting";
 import { toastError, toastSuccess } from "../utils/toastUtils";
 import useFetch from "../api/useDataFetching";
 import { FALLBACK_IMAGE } from "../utils/imageUtils";
+import { useAuth } from "../utils/AuthContext";
 
 interface OrderDetailsComponentProps {
   orderItem: GetOrderItemDTO;
@@ -19,9 +20,12 @@ const OrderDetailsComponent = ({
   const [ratingNumber, setRatingNumber] = useState(0);
   const [review, setReview] = useState("");
   const [hasRating, setHasRating] = useState(false);
+  const { user } = useAuth();
 
   const { responseData, error, postData } = usePost<Rating>("Rating");
-  const rating = useFetch<Rating>(`Rating/item/${orderItem.itemId}/user/1`);
+  const rating = useFetch<Rating>(
+    `Rating/item/${orderItem.itemId}/user/${user?.id}`
+  );
 
   const handleRatingChange = (newRating: number) => {
     setRatingNumber(newRating);
@@ -32,7 +36,7 @@ const OrderDetailsComponent = ({
     postData({
       comment: review,
       itemRating: ratingNumber,
-      userId: 1,
+      userId: user!.id,
       itemId: orderItem.itemId!,
     });
   };

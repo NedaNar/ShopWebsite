@@ -1,14 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../api/useDataFetching";
-import { Order } from "../api/apiModel";
+import { Order, User } from "../api/apiModel";
 import { useAuth } from "../utils/AuthContext";
 
 const UserProfile: React.FC = () => {
   const { user } = useAuth();
+  const userData = user ? useFetch<User>(`auth/${user.id}`) : null;
 
   const navigate = useNavigate();
-  const orders = useFetch<Order[]>(`Order/user/1`);
+  const orders = useFetch<Order[]>(`Order/user/${user?.id}`);
 
   return (
     <div style={{ margin: "3.6rem 10% 9.6rem" }}>
@@ -34,8 +35,8 @@ const UserProfile: React.FC = () => {
         <p style={{ margin: "0 0 1.2rem", fontSize: "1.8rem" }}>
           Personal information
         </p>
-        <p>Name Surname</p>
-        <p>example@gmail.com</p>
+        <p>{userData && userData.name}</p>
+        <p>{userData && userData.email}</p>
         <div className="row">
           <button className="btn-small">Edit</button>{" "}
           <button className="btn-small">Save</button>

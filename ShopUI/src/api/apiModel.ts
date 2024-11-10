@@ -64,3 +64,8 @@ export interface GetOrderItemDTO {
 export interface UpdateOrderDTO {
   status: OrderStatus;
 }
+
+export interface User {
+  email: string;
+  name: string;
+}
