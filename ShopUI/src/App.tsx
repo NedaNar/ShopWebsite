@@ -16,30 +16,69 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CartProvider } from "./utils/CartContext";
 import ScrollToTop from "./utils/ScrollToTop";
+import { AuthProvider } from "./utils/AuthContext";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   return (
     <>
       <ToastContainer />
-      <Header />
-      <BrowserRouter>
-        <ScrollToTop />
-        <CartProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<ShoppingCart />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/orders/:id" element={<OrderDetails />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="*" element={<Home />} />
-          </Routes>
-        </CartProvider>
-      </BrowserRouter>
-      <Footer />
+      <AuthProvider>
+        <BrowserRouter>
+          <Header />
+          <ScrollToTop />
+          <CartProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute requiredRole={"user"}>
+                    <ShoppingCart />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/orders/:id" element={<OrderDetails />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute loggedIn={true} requiredRole="user">
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <ProtectedRoute loggedIn={false}>
+                    <Signup />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <ProtectedRoute loggedIn={false}>
+                    <Login />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute loggedIn={true} requiredRole="user">
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </CartProvider>
+        </BrowserRouter>
+        <Footer />
+      </AuthProvider>
     </>
   );
 }

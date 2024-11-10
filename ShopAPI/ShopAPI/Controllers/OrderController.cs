@@ -1,24 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ShopAPI.DataTransferObjects;
 
 [ApiController]
 [Route("api/[controller]")]
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
+    private readonly IMapper _mapper;
 
-    public OrderController(IOrderService orderService)
+    public OrderController(IOrderService orderService, IMapper mapper)
     {
         _orderService = orderService;
+        _mapper = mapper;
     }
 
     [HttpPost]
     [ProducesResponseType(typeof(Order), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateOrder([FromBody] Order order)
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDTO createOrderDto)
     {
+        var order = _mapper.Map<Order>(createOrderDto);
+
         var createdOrder = await _orderService.CreateOrderAsync(order);
-        return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.Id }, createdOrder);
+
+        var orderDto = _mapper.Map<GetOrderDTO>(createdOrder);
+        return CreatedAtAction(nameof(GetOrderById), new { id = orderDto.Id }, orderDto);
     }
 
     [HttpGet("{id}")]
@@ -29,7 +37,9 @@ public class OrderController : ControllerBase
     {
         var order = await _orderService.GetOrderByIdAsync(id);
         if (order == null) return NotFound();
-        return Ok(order);
+
+        var orderDto = _mapper.Map<GetOrderDTO>(order);
+        return Ok(orderDto);
     }
 
     [HttpGet]
@@ -38,7 +48,8 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetAllOrders()
     {
         var orders = await _orderService.GetAllOrdersAsync();
-        return Ok(orders);
+        var ordersDto = _mapper.Map<List<GetOrderDTO>>(orders);
+        return Ok(ordersDto);
     }
 
     [HttpGet("user/{userId}")]
@@ -49,7 +60,9 @@ public class OrderController : ControllerBase
     {
         var orders = await _orderService.GetOrdersByUserIdAsync(userId);
         if (orders == null || !orders.Any()) return NotFound();
-        return Ok(orders);
+
+        var ordersDto = _mapper.Map<List<GetOrderDTO>>(orders);
+        return Ok(ordersDto);
     }
 
     [HttpPut("{id}")]
@@ -61,7 +74,9 @@ public class OrderController : ControllerBase
     {
         var updatedOrder = await _orderService.UpdateOrderStatusAsync(id, orderDto);
         if (updatedOrder == null) return NotFound();
-        return Ok(updatedOrder);
+
+        var updatedOrderDto = _mapper.Map<GetOrderDTO>(updatedOrder);
+        return Ok(updatedOrderDto);
     }
 
     [HttpDelete("{id}")]

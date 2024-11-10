@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { OrderItem, Rating } from "../api/apiModel";
+import { GetOrderItemDTO, Rating } from "../api/apiModel";
 import { OrderStatus } from "../utils/OrderStatus";
 import StarRating from "./StarRating";
 import usePost from "../api/useDataPosting";
@@ -8,7 +8,7 @@ import useFetch from "../api/useDataFetching";
 import { FALLBACK_IMAGE } from "../utils/imageUtils";
 
 interface OrderDetailsComponentProps {
-  orderItem: OrderItem;
+  orderItem: GetOrderItemDTO;
   orderStatus: OrderStatus;
 }
 
@@ -21,7 +21,7 @@ const OrderDetailsComponent = ({
   const [hasRating, setHasRating] = useState(false);
 
   const { responseData, error, postData } = usePost<Rating>("Rating");
-  const rating = useFetch<Rating>(`Rating/item/${orderItem.item!.id}/user/1`);
+  const rating = useFetch<Rating>(`Rating/item/${orderItem.itemId}/user/1`);
 
   const handleRatingChange = (newRating: number) => {
     setRatingNumber(newRating);
@@ -33,7 +33,7 @@ const OrderDetailsComponent = ({
       comment: review,
       itemRating: ratingNumber,
       userId: 1,
-      itemId: orderItem.item!.id!,
+      itemId: orderItem.itemId!,
     });
   };
 
@@ -58,7 +58,7 @@ const OrderDetailsComponent = ({
 
   return (
     <div>
-      {orderItem.item && (
+      {orderItem.id && (
         <li
           className="collection-item teal lighten-5"
           style={{
@@ -74,7 +74,7 @@ const OrderDetailsComponent = ({
           >
             <div className="left">
               <img
-                src={orderItem.item.img}
+                src={orderItem.img ?? ""}
                 onError={(e) => {
                   e.currentTarget.src = FALLBACK_IMAGE;
                 }}
@@ -82,7 +82,7 @@ const OrderDetailsComponent = ({
               />
             </div>
             <div className="left" style={{ margin: "0 2.4rem" }}>
-              <h5 style={{ margin: "0" }}>{orderItem.item.name}</h5>
+              <h5 style={{ margin: "0" }}>{orderItem.name}</h5>
               <p
                 style={{
                   fontSize: "1.6rem",
@@ -90,7 +90,7 @@ const OrderDetailsComponent = ({
                   margin: "0.4rem 0 0",
                 }}
               >
-                ${orderItem.item?.price}
+                ${orderItem.price}
               </p>
             </div>
 
@@ -107,12 +107,16 @@ const OrderDetailsComponent = ({
                   color: "#250000",
                 }}
               >
-                ${(orderItem.quantity * orderItem.item.price).toFixed(2)}
+                $
+                {(orderItem.price
+                  ? orderItem.quantity * orderItem.price
+                  : 0
+                ).toFixed(2)}
               </p>
             </div>
           </div>
 
-          {orderStatus.trim() == OrderStatus.Received && !hasRating && (
+          {orderStatus.trim() == OrderStatus.Completed && !hasRating && (
             <div className="row">
               <p style={{ fontWeight: "bold", margin: "1.6rem 0 0.6rem" }}>
                 Leave a review

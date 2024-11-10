@@ -1,5 +1,5 @@
 import useFetch from "../api/useDataFetching";
-import { Order, UpdateOrderDTO } from "../api/apiModel";
+import { GetOrderDTO, Order, UpdateOrderDTO } from "../api/apiModel";
 import { OrderStatus } from "../utils/OrderStatus";
 import { useEffect, useState } from "react";
 import { toastError, toastSuccess } from "../utils/toastUtils";
@@ -10,11 +10,14 @@ import useDelete from "../api/useDataDeleting";
 const Orders = () => {
   const navigate = useNavigate();
 
-  const fetchedOrders = useFetch<Order[]>(`Order`);
+  const fetchedOrders = useFetch<GetOrderDTO[]>(`Order`);
   const { deleteData, deleted } = useDelete<Order>();
-  const { responseData, error, updateData } = useUpdate<UpdateOrderDTO, Order>();
+  const { responseData, error, updateData } = useUpdate<
+    UpdateOrderDTO,
+    Order
+  >();
 
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<GetOrderDTO[]>([]);
   const [toDeleteId, setToDeleteId] = useState<number | undefined>(undefined);
 
   const handleStatusChange = (status: OrderStatus, id?: number) => {

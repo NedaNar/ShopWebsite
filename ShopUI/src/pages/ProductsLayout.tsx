@@ -10,8 +10,11 @@ import { toastError, toastSuccess } from "../utils/toastUtils";
 import usePost from "../api/useDataPosting";
 import useUpdate from "../api/useDataUpdating";
 import useDelete from "../api/useDataDeleting";
+import { useAuth } from "../utils/AuthContext";
 
 export default function ProductsLayout() {
+  const { user } = useAuth();
+
   const [selectedCategory, setselectedCategory] =
     useState<ProductCategory | null>(null);
   const [filteredItems, setFilteredItems] = useState<Item[] | null>([]);
@@ -128,16 +131,18 @@ export default function ProductsLayout() {
     <div>
       <div className="container">
         <div className="row" style={{ margin: "3.2rem 1.6rem 2.4rem" }}>
-          <button
-            className="btn-large blue darken-3"
-            style={{ margin: "0 2rem 0 0" }}
-            onClick={() => handleAddNew()}
-          >
-            <div className="valign-wrapper">
-              <span>Create New Item&nbsp;</span>
-              <i className="material-icons">add</i>
-            </div>
-          </button>
+          {user && user.role === "admin" && (
+            <button
+              className="btn-large blue darken-3"
+              style={{ margin: "0 2rem 0 0" }}
+              onClick={() => handleAddNew()}
+            >
+              <div className="valign-wrapper">
+                <span>Create New Item&nbsp;</span>
+                <i className="material-icons">add</i>
+              </div>
+            </button>
+          )}
           <button
             className="btn-large"
             style={{ margin: "0 0.4rem" }}
@@ -187,27 +192,33 @@ export default function ProductsLayout() {
                     >
                       View more
                     </button>
-                    <button
-                      className="btn-small  teal lighten-2"
-                      disabled={product.itemCount <= 0}
-                      onClick={() => addToCart(product, true)}
-                    >
-                      <i className="material-icons right">shopping_cart</i>Add
-                      to cart
-                    </button>
-                    <button
-                      className="btn teal lighten-2"
-                      onClick={() => handleEdit(product)}
-                    >
-                      <i className="material-icons right">edit</i>Edit
-                    </button>
-                    <button
-                      className="btn red darken-4"
-                      onClick={() => handleItemDelete(product.id!)}
-                      style={{ marginLeft: "1rem" }}
-                    >
-                      <i className="material-icons">delete_forever</i>
-                    </button>
+                    {(!user || user.role === "user") && (
+                      <button
+                        className="btn-small  teal lighten-2"
+                        disabled={product.itemCount <= 0}
+                        onClick={() => addToCart(product, true)}
+                      >
+                        <i className="material-icons right">shopping_cart</i>Add
+                        to cart
+                      </button>
+                    )}
+                    {user && user.role === "admin" && (
+                      <>
+                        <button
+                          className="btn teal lighten-2"
+                          onClick={() => handleEdit(product)}
+                        >
+                          <i className="material-icons right">edit</i>Edit
+                        </button>
+                        <button
+                          className="btn red darken-4"
+                          onClick={() => handleItemDelete(product.id!)}
+                          style={{ marginLeft: "1rem" }}
+                        >
+                          <i className="material-icons">delete_forever</i>
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

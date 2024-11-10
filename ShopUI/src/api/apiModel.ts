@@ -41,6 +41,26 @@ export interface OrderItem {
   item?: Item;
 }
 
+export interface GetOrderDTO {
+  id?: number;
+  totalPrice: number;
+  address: string;
+  phoneNumber: string;
+  orderDate: string;
+  status: OrderStatus;
+  userId: number;
+  orderItems: GetOrderItemDTO[];
+}
+
+export interface GetOrderItemDTO {
+  id: number;
+  quantity: number;
+  itemId: number | null;
+  name: string | null;
+  img: string | null;
+  price: number | null;
+}
+
 export interface UpdateOrderDTO {
   status: OrderStatus;
 }

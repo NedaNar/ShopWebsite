@@ -1,9 +1,11 @@
 import SmallProductComponent from "../components/SmallProductComponent";
+import { useAuth } from "../utils/AuthContext";
 import { useCart } from "../utils/CartContext";
 import { useNavigate } from "react-router-dom";
 
 const ShoppingCart = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const { cart } = useCart();
 
@@ -36,8 +38,9 @@ const ShoppingCart = () => {
           <button
             className="btn-large right"
             onClick={() => navigate("/checkout")}
+            disabled={!user}
           >
-            Checkout
+            {!user ? "Login to proceed" : "Checkout"}
           </button>
           <h5
             className="right"

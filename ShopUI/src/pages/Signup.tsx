@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../utils/AuthContext";
+import { useNavigate } from "react-router";
+import { toastError } from "../utils/toastUtils";
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await signUp(username, email, password);
+      navigate("/");
+    } catch (err: any) {
+      toastError(err.message);
+    }
+  };
 
   return (
     <div className="container" style={{ margin: "4.8rem auto 6.4rem" }}>
@@ -46,6 +61,8 @@ const Signup = () => {
             <button
               className="btn-large waves-effect waves-light"
               type="submit"
+              disabled={!username || !email || !password}
+              onClick={handleSignUp}
             >
               Sign up
               <i className="material-icons right">send</i>

@@ -2,8 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../api/useDataFetching";
 import { Order } from "../api/apiModel";
+import { useAuth } from "../utils/AuthContext";
 
 const UserProfile: React.FC = () => {
+  const { user } = useAuth();
+
   const navigate = useNavigate();
   const orders = useFetch<Order[]>(`Order/user/1`);
 
@@ -39,7 +42,7 @@ const UserProfile: React.FC = () => {
         </div>
       </div>
 
-      {orders && orders.length > 0 && (
+      {user && user.role === "user" && orders && orders.length > 0 && (
         <div>
           <p
             style={{

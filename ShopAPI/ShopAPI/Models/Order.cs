@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 [Table("order")]
 public class Order
@@ -9,31 +8,30 @@ public class Order
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "Total price is required.")]
+    [Required]
     [Column("total_price")]
-    [Range(0, double.MaxValue, ErrorMessage = "Total price must be a positive value.")]
+    [Range(0, double.MaxValue)]
     public double TotalPrice { get; set; }
 
-    [Required(ErrorMessage = "Address is required.")]
-    [StringLength(255, ErrorMessage = "Address cannot be longer than 255 characters.")]
+    [Required]
+    [StringLength(255)]
     public string Address { get; set; }
 
-    [Required(ErrorMessage = "Phone number is required.")]
-    [StringLength(30, ErrorMessage = "Phone number cannot be longer than 30 characters.")]
+    [Required]
+    [StringLength(30)]
     public string PhoneNumber { get; set; }
 
-    [Required(ErrorMessage = "Order date is required.")]
+    [Required]
     public string OrderDate { get; set; }
 
-    [Required(ErrorMessage = "Status is required.")]
-    [RegularExpression(@"^(Received|Preparing|Shipped|Completed)$", ErrorMessage = "Status must be one of the following: Received, Preparing, Shipped, Completed.")]
+    [Required]
+    [RegularExpression(@"^(Received|Preparing|Shipped|Completed)$")]
     public string Status { get; set; }
 
-    [Required(ErrorMessage = "User ID is required.")]
+    [Required]
     [Column("fk_userid")]
     public int UserId { get; set; }
 
-    [JsonIgnore]
     [ForeignKey("UserId")]
     public User? User { get; set; }
 

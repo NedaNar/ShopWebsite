@@ -1,8 +1,24 @@
 import { useState } from "react";
+import { useAuth } from "../utils/AuthContext";
+import { useNavigate } from "react-router";
+import { toastError } from "../utils/toastUtils";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { logIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await logIn(email, password);
+      navigate("/");
+    } catch (err: any) {
+      toastError(err.message);
+    }
+  };
 
   return (
     <div className="container" style={{ margin: "4.8rem auto 6.4rem" }}>
@@ -35,6 +51,7 @@ const Login = () => {
             <button
               className="btn-large waves-effect waves-light"
               type="submit"
+              onClick={handleLogin}
             >
               Login
               <i className="material-icons right">send</i>

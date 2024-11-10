@@ -6,10 +6,12 @@ import { useCart } from "../utils/CartContext";
 import useDelete from "../api/useDataDeleting";
 import { useEffect, useState } from "react";
 import { FALLBACK_IMAGE } from "../utils/imageUtils";
+import { useAuth } from "../utils/AuthContext";
 
 const ProductDetail = () => {
   const location = useLocation();
   const product = location.state?.product;
+  const { user } = useAuth();
 
   const { addToCart } = useCart();
   const { deleteData, deleted } = useDelete<Rating>();
@@ -91,13 +93,15 @@ const ProductDetail = () => {
           <h4 style={{ marginBottom: "2.4rem" }}>
             <strong>${product.price.toFixed(2)}</strong>
           </h4>
-          <button
-            className="btn-large teal lighten-2"
-            disabled={product.itemCount <= 0}
-            onClick={() => addToCart(product, true)}
-          >
-            <i className="material-icons right">shopping_cart</i>Add to cart
-          </button>
+          {(!user || user.role === "user") && (
+            <button
+              className="btn-large teal lighten-2"
+              disabled={product.itemCount <= 0}
+              onClick={() => addToCart(product, true)}
+            >
+              <i className="material-icons right">shopping_cart</i>Add to cart
+            </button>
+          )}
         </div>
       </div>
       {ratings && ratings.length > 0 && (

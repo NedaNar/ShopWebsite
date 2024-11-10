@@ -1,4 +1,12 @@
+import { useAuth } from "../utils/AuthContext";
+
 export default function Header() {
+  const { user, logOut } = useAuth();
+
+  const handleLogout = () => {
+    logOut();
+  };
+
   return (
     <nav>
       <div
@@ -12,24 +20,39 @@ export default function Header() {
           <li>
             <a href="/">Products</a>
           </li>
-          <li>
-            <a href="/orders">Orders</a>
-          </li>
+          {user && user.role === "admin" && (
+            <li>
+              <a href="/orders">Orders</a>
+            </li>
+          )}
         </ul>
         <ul className="right" style={{ marginRight: "10%" }}>
-          <li>
-            <a href="/cart">
-              <i className="material-icons">shopping_cart</i>
-            </a>
-          </li>
-          <li>
-            <a href="/profile">
-              <i className="material-icons">account_circle</i>
-            </a>
-          </li>
-          <li>
-            <a href="/Signup">SIGN UP</a>
-          </li>
+          {(!user || user.role === "user") && (
+            <li>
+              <a href="/cart">
+                <i className="material-icons">shopping_cart</i>
+              </a>
+            </li>
+          )}
+          {user && (
+            <li>
+              <a href="/profile">
+                <i className="material-icons">account_circle</i>
+              </a>
+            </li>
+          )}
+          {user && (
+            <li>
+              <button className="btn-flat white-text" onClick={handleLogout}>
+                LOG OUT
+              </button>
+            </li>
+          )}
+          {!user && (
+            <li>
+              <a href="/Signup">SIGN UP</a>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

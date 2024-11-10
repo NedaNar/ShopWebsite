@@ -1,10 +1,10 @@
-import { Order } from "../api/apiModel";
+import { GetOrderDTO } from "../api/apiModel";
 import { useLocation } from "react-router-dom";
 import OrderDetailsComponent from "../components/OrderDetailsComponent";
 
 const OrderDetails = () => {
   const location = useLocation();
-  const order: Order = location.state?.order;
+  const order: GetOrderDTO = location.state?.order;
   if (!order) {
     return <div>Order not found</div>;
   }
@@ -32,7 +32,7 @@ const OrderDetails = () => {
           </p>
         </div>
         {order.orderItems.map((orderItem, index) =>
-          orderItem.item ? (
+          orderItem.itemId ? (
             <OrderDetailsComponent
               key={index}
               orderStatus={order.status}

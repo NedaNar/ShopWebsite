@@ -7,8 +7,8 @@ export const toastSuccess = (message: ToastContent) => {
   });
 };
 
-export const toastError = () => {
-  toast.error(`Error! Please try again later.`, {
+export const toastError = (message?: string) => {
+  toast.error(message ?? `Error! Please try again later.`, {
     position: "top-center",
     autoClose: 2000,
   });

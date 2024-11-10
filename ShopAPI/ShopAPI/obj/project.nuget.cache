@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "rv8kO1e2PbPTlp4KWFr3FwYJ+7+fv5PVFPzj5iN+9HDdFo+v4+sDVspGiSaHa2dHqHXetKJz1VZezdc9637hTA==",
+  "dgSpecHash": "DpIpdbo7UE+QOGX36ldmL74eTiC/+/u3dAy6lDUtSqcePSAUMm5Wvv9guUnTEUXC6TvFqejGNICmRy8FmoWngA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\ShopAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Neda\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Neda\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Neda\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\Neda\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",

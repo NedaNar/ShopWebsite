@@ -38,12 +38,11 @@ const ItemDialog = ({ item, onSave, isOpen, onClose }: ItemDialogProps) => {
         onCloseEnd: onClose,
       });
 
-      M.updateTextFields();
-
       if (isOpen) {
         modalInstance.open();
         const elems = document.querySelectorAll("select");
         M.FormSelect.init(elems);
+        M.updateTextFields();
       } else {
         modalInstance.close();
       }
@@ -62,7 +61,7 @@ const ItemDialog = ({ item, onSave, isOpen, onClose }: ItemDialogProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newItem: Item = {
-      name,
+      name: name.toUpperCase(),
       category: category.trim() as ProductCategory,
       img,
       descr,
@@ -70,6 +69,7 @@ const ItemDialog = ({ item, onSave, isOpen, onClose }: ItemDialogProps) => {
       itemCount: parseInt(itemCount.toString()),
     };
     onSave(newItem);
+    clearData();
   };
 
   const clearData = () => {
