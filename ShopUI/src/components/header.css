@@ -1,0 +1,33 @@
+.notification_count {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  height: 35px;
+  width: 35px;
+  background: #0e2831;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+}
+
+.notification-list {
+  z-index: 1000;
+  padding: 5px 20px;
+  position: absolute;
+  top: 80px;
+  right: 40px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 8px rgba(0 0 0 0.2);
+  color: black;
+  line-height: normal;
+  text-align: left;
+}

@@ -1,19 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using ShopAPI.Models;
 
 public class RatingService : IRatingService
 {
     private readonly ShopContext _context;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public RatingService(ShopContext context)
+    public RatingService(ShopContext context, IHubContext<NotificationHub> hubContext)
     {
         _context = context;
+        _hubContext = hubContext;
     }
 
     public async Task<Rating> CreateRatingAsync(Rating rating)
     {
+        var itemName = await _context.Items
+            .Where(i => i.Id == rating.ItemId)
+            .Select(i => i.Name)
+            .FirstOrDefaultAsync();
+
+        if (itemName == null)
+        {
+            throw new ArgumentException("Item not found.");
+        }
+
         _context.Ratings.Add(rating);
         await _context.SaveChangesAsync();
+
+        await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"Review for '{itemName}' received ({rating.ItemRating} stars).");
+
         return rating;
     }
 

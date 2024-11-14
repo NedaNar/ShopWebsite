@@ -5,6 +5,22 @@
     {
       "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\ratingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\ratingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\services\\auth\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\services\\auth\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|c:\\users\\neda\\desktop\\shopwebsite\\shopapi\\shopapi\\signalr\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8F60A99-0B68-49CA-B72B-07C1BC0D7602}|ShopAPI\\ShopAPI.csproj|solutionrelative:shopapi\\signalr\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +30,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 402,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\Auth\\AuthService.cs",
+              "RelativeDocumentMoniker": "ShopAPI\\Services\\Auth\\AuthService.cs",
+              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\Auth\\AuthService.cs",
+              "RelativeToolTip": "ShopAPI\\Services\\Auth\\AuthService.cs",
+              "ViewState": "AQIAAEsAAAAAAAAAAAAEwFAAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-14T16:54:15.082Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,9 +53,48 @@
               "RelativeDocumentMoniker": "ShopAPI\\Services\\OrderService.cs",
               "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\OrderService.cs",
               "RelativeToolTip": "ShopAPI\\Services\\OrderService.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAiwCgAAAAAAAAA",
+              "ViewState": "AQIAABAAAAAAAAAAAAAQwCwAAABwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-10T12:04:00.29Z",
+              "WhenOpened": "2024-11-14T16:41:53.189Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RatingService.cs",
+              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\RatingService.cs",
+              "RelativeDocumentMoniker": "ShopAPI\\Services\\RatingService.cs",
+              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Services\\RatingService.cs",
+              "RelativeToolTip": "ShopAPI\\Services\\RatingService.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAAwB4AAACHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-14T16:41:50.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Program.cs",
+              "RelativeDocumentMoniker": "ShopAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\Program.cs",
+              "RelativeToolTip": "ShopAPI\\Program.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAADwvy4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-14T16:37:29.917Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NotificationHub.cs",
+              "DocumentMoniker": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\SignalR\\NotificationHub.cs",
+              "RelativeDocumentMoniker": "ShopAPI\\SignalR\\NotificationHub.cs",
+              "ToolTip": "C:\\Users\\Neda\\Desktop\\ShopWebsite\\ShopAPI\\ShopAPI\\SignalR\\NotificationHub.cs",
+              "RelativeToolTip": "ShopAPI\\SignalR\\NotificationHub.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-14T16:35:17.595Z",
               "EditorCaption": ""
             }
           ]

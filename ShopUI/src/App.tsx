@@ -51,7 +51,7 @@ function App() {
               <Route
                 path="/orders/:id"
                 element={
-                  <ProtectedRoute loggedIn={true} requiredRole="user">
+                  <ProtectedRoute loggedIn={true}>
                     <OrderDetails />
                   </ProtectedRoute>
                 }

@@ -1,11 +1,12 @@
 import { useCart } from "../utils/CartContext";
 import { useEffect, useState } from "react";
 import usePost from "../api/useDataPosting";
-import { Order } from "../api/apiModel";
+import { Order, User } from "../api/apiModel";
 import { OrderStatus } from "../utils/OrderStatus";
 import { useNavigate } from "react-router";
 import { toastError, toastSuccess } from "../utils/toastUtils";
 import { useAuth } from "../utils/AuthContext";
+import useFetch from "../api/useDataFetching";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Checkout = () => {
   const { user } = useAuth();
 
   const { responseData, error, postData } = usePost<Order>("Order");
+  const userData = user ? useFetch<User>(`auth/${user.id}`) : null;
 
   const totalPrice = cart.reduce(
     (total, product) => total + product.price * product.quantity,
@@ -76,7 +78,7 @@ const Checkout = () => {
                 textAlign: "left",
               }}
             >
-              {"Name Surname"}
+              {userData?.name}
             </p>
             <p
               style={{
@@ -86,7 +88,7 @@ const Checkout = () => {
                 color: "#3A5C74",
               }}
             >
-              {"example@email.com"}
+              {userData?.email}
             </p>
             <div className="input-field">
               <input

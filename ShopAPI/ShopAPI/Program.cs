@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ShopAPI.SMTP;
-using AutoMapper;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ShopContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ShopDBCon")));
@@ -33,6 +32,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
 app.UseCors(builder => {
     builder
     .WithOrigins(["http://localhost:5173"])
@@ -45,6 +46,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<NotificationHub>("/notificationHub");
+    endpoints.MapControllers();
+});
 
 app.Run();

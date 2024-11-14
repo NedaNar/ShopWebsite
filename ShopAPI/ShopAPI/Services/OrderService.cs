@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using ShopAPI.DataTransferObjects;
 using ShopAPI.SMTP;
@@ -9,12 +10,14 @@ public class OrderService : IOrderService
     private readonly ShopContext _context;
     private readonly EmailService _emailService;
     private readonly IMapper _mapper;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public OrderService(ShopContext context, EmailService emailService, IMapper mapper)
+    public OrderService(ShopContext context, EmailService emailService, IMapper mapper, IHubContext<NotificationHub> hubContext)
     {
         _context = context;
         _emailService = emailService;
         _mapper = mapper;
+        _hubContext = hubContext;
     }
 
     public async Task<Order> CreateOrderAsync(Order order)
@@ -38,6 +41,8 @@ public class OrderService : IOrderService
         await _context.SaveChangesAsync();
 
         await sendEmail(order, $"Hello, your order with ID {order.Id} has been received.", "Order Received");
+
+        await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"New order #{order.Id} has been placed.");
 
         return order;
     }

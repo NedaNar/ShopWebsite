@@ -1,7 +1,22 @@
+import { useState } from "react";
 import { useAuth } from "../utils/AuthContext";
+import "./header.css";
+import useSignalR from "../api/useSignalR";
 
 export default function Header() {
+  const [notifications, setNotifications] = useState<string[]>([]);
+  const [isNotificationOpen, setNotificationOpen] = useState(false);
   const { user, logOut } = useAuth();
+
+  const handleNotification = (message: string) => {
+    setNotifications((prevNotifications) => [...prevNotifications, message]);
+  };
+
+  useSignalR({ onReceiveNotification: handleNotification });
+
+  const toggleNotifications = () => {
+    setNotificationOpen(!isNotificationOpen);
+  };
 
   const handleLogout = () => {
     logOut();
@@ -39,6 +54,40 @@ export default function Header() {
               <a href="/profile">
                 <i className="material-icons">account_circle</i>
               </a>
+            </li>
+          )}
+          {user && user.role === "admin" && (
+            <li>
+              <a onClick={toggleNotifications} style={{ position: "relative" }}>
+                <i className="material-icons">notifications</i>
+
+                <span className="notification_count">
+                  {notifications.length}
+                </span>
+              </a>
+              {isNotificationOpen && (
+                <div className="notification-list">
+                  {notifications.length === 0 && (
+                    <span style={{ color: "black" }}>No new notifications</span>
+                  )}
+                  {notifications.length > 0 && (
+                    <ul style={{ listStyleType: "none" }}>
+                      {notifications.length > 0 &&
+                        notifications.map((notification, index) => (
+                          <li
+                            key={index}
+                            style={{
+                              padding: "8px",
+                              borderBottom: "1px solid #ddd",
+                            }}
+                          >
+                            {notification}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </div>
+              )}
             </li>
           )}
           {user && (
